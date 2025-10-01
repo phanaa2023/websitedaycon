@@ -1,0 +1,338 @@
+body {
+  font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #111111;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* ưu tiên mobile */
+}
+
+
+/* ----------------- CONTAINER ----------------- */
+.container {
+  width: 100%;
+  max-width: 420px; /* giữ giới hạn mobile */
+  padding: 20px;    /* khoảng cách bên trong */
+}
+
+/* ----------------- HEADER (theo ảnh mẫu) ----------------- */
+header {
+  text-align: center;
+  margin-bottom: 18px;
+  padding-top: 6px;
+}
+header .author {
+  color: #EC407A; /* rose pink */
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+header h1 {
+  color: #348C90; /* teal */
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 900;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+header h2 {
+  color: #348C90;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 auto;
+  max-width: 360px;
+}
+
+/* ----------------- INTRO TEXT ----------------- */
+.intro {
+  margin: 16px 0 18px 0;
+  padding: 0 6px;
+}
+.intro p {
+  text-align: left;
+  font-size: 15px;
+  color: #111111;
+  line-height: 1.6;
+}
+
+/* ----------------- UNLOCK (mã khóa) ----------------- */
+.unlock {
+  margin: 18px 0 22px 0;
+  text-align: center;
+}
+.unlock label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #111111;
+}
+.unlock .code-row {
+  display: flex;
+  flex-direction: column;   /* đổi từ ngang -> dọc */
+  align-items: center;      /* căn giữa */
+  gap: 12px;                /* khoảng cách giữa input và button */
+}
+
+.unlock input[type="text"],
+.unlock input[type="password"] {
+  width: 68%;
+  max-width: 68%;
+  min-width: 160px;
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 2px solid #348C90;
+  border-radius: 8px;
+  outline: none;
+  font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+.unlock input::placeholder { color: #999999; }
+.unlock button {
+  padding: 10px 18px;
+  background: #348C90;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+}
+.unlock button:active { transform: translateY(1px); }
+
+/* small screens tweak */
+@media (max-width: 360px) {
+  .unlock input { width: 60%; }
+  .unlock button { padding: 10px 14px; font-size: 15px; }
+}
+
+/* ----------------- MAIN / ARTICLE / VIDEO ----------------- */
+main { margin-top: 6px; padding-bottom: 40px; }
+article { margin-bottom: 22px; }
+article h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #111111;
+}
+
+/* video area (16:9) */
+.video {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  background: #000;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.video iframe,
+.video .placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* caption/links under video */
+.quiz-links { margin-top: 8px; padding-left: 6px; }
+.quiz-links li { list-style: none; margin-bottom: 6px; }
+.quiz-links a {
+  text-decoration: none;
+  color: #111;
+  font-weight: 700;
+  font-size: 15px;
+}
+.quiz-links a:hover { text-decoration: underline; }
+
+
+/* ----------------- FOOTER ----------------- */
+footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; padding-bottom: 30px; }
+
+/* ----------------- HELPERS ----------------- */
+.center { text-align:center; }
+.left { text-align:left; }
+.hidden { display:none !important; }
+
+/* very small phones */
+@media (max-width: 320px) {
+  header h1 { font-size: 32px; }
+  header h2 { font-size: 14px; }
+  .unlock input { font-size: 15px; padding: 9px; }
+  .unlock button { font-size: 15px; padding: 9px 12px; }
+}
+
+/* Khi xoay ngang trên điện thoại */
+@media (orientation: landscape) {
+  html, body {
+    /* không cần overflow:hidden */
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .video {
+    width: 100%;
+    height: auto; /* giữ tỷ lệ 16:9 */
+    padding-bottom: 56.25%;
+  }
+  .video iframe {
+    width: 100%;
+    height: 100%;
+  }
+}
+.quiz-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 24px 0;
+}
+
+.quiz-buttons button {
+  padding: 12px 18px;
+  width: 90%;
+  max-width: 300px;
+  background: #348C90;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.quiz-buttons button:nth-child(4) { background: #3da94f; }
+.quiz-buttons button:active { transform: translateY(1px); }
+
+/* Popup */
+.quiz-popup {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+.quiz-popup.active { display: flex; }
+.quiz-popup .popup-content {
+  width: 95%; max-width: 500px; height: 90%;
+  background: #fff; border-radius: 12px; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.quiz-popup iframe {
+  flex: 1;
+  width: 100%; border: none;
+}
+.close-btn {
+  background: #348C90; color: #fff;
+  border: none; font-size: 20px;
+  cursor: pointer; padding: 8px 12px;
+  align-self: flex-end;
+}
+/* Tài liệu tặng */
+.resources {
+  margin: 40px auto 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.resources h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #333;
+}
+
+.resource-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.resource-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.resource-card h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  color: #222;
+}
+
+.btn-download {
+  display: inline-block;
+  padding: 10px 18px;
+  background: #348C90;
+  color: #fff;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.btn-download:hover {
+  background: #2c6f72;
+}
+
+  .btn-fanpage {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #1877F2;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+  }
+
+  .btn-fanpage:hover {
+    transform: scale(1.08);
+    background: #0a5adf;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+.footer-offer {
+  text-align: center;
+  font-size: 17px;       /* ↑ tăng size chữ */
+  line-height: 1.8;      /* ↑ thoáng hơn để dễ đọc */
+  color: #333;
+  background: #f9f9f9;
+  padding: 24px;         /* ↑ thêm padding cho cân đối */
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.footer-offer strong {
+  color: #d32f2f;
+  font-weight: 700;      /* chữ đậm hơn */
+}
+
+.footer-offer span {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #1877f2;
+  font-size: 18px;       /* nhấn mạnh riêng đoạn này */
+}
+

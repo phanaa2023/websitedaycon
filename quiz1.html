@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trắc nghiệm mầm non</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #f0f8ff;
+      padding: 16px;
+      margin: 0;
+      color: #333;
+    }
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 24px;
+    }
+    .question {
+      background: #ffffff;
+      border-left: 6px solid #4caf50;
+      margin: 14px 0;
+      padding: 14px 16px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    label {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    input[type="number"] {
+      width: 100%;
+      max-width: 80px;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 25px auto 0;
+      transition: background 0.3s;
+    }
+    button:hover { background-color: #43a047; }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background: #e0f7fa;
+      border-left: 6px solid #00acc1;
+      border-radius: 10px;
+      display: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    #result h3 { color: #00796b; font-size: 20px; margin-bottom: 12px; }
+
+    .error { border: 2px solid red !important; }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      label { font-size: 15px; }
+      input[type="number"] { max-width: 70px; font-size: 16px; }
+      h2 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📋 Đánh giá tâm lý của trẻ mầm non</h2>
+  <p>Chấm điểm từ 1 đến 5 cho mỗi câu, trong đó 1 = hoàn toàn chưa đúng, 5 = hoàn toàn đúng với con</p>
+  <form id="surveyForm">
+    <div id="questions"></div>
+    <button type="submit">📊 Xem kết quả</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      "Bé thường xuyên cười vui, ánh mắt linh hoạt, gương mặt tươi sáng.",
+      "Bé thể hiện rõ cảm xúc như vui, buồn, giận, và biết nói ra điều mình muốn.",
+      "Bé dễ gần gũi, tin tưởng người lớn và không quá bám víu.",
+      "Bé biết chào hỏi, cảm ơn và xin lỗi khi được hướng dẫn.",
+      "Bé chia sẻ đồ chơi và chơi hòa đồng với bạn.",
+      "Bé dễ hòa nhập với môi trường mới như lớp học, nhóm chơi.",
+      "Bé có thể tự chơi và khám phá một cách độc lập.",
+      "Bé thể hiện cảm xúc phù hợp và biết làm dịu bản thân khi không được như ý.",
+      "Bé sử dụng thiết bị điện tử ít và không quá phụ thuộc.",
+      "Bé tò mò, ham học hỏi và thích khám phá thế giới xung quanh."
+    ];
+
+    const qContainer = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `
+        <label for="q${i}">${i + 1}. ${q}</label>
+        <input type="number" id="q${i}" name="q${i}" min="1" max="5" required>
+      `;
+      qContainer.appendChild(div);
+    });
+
+    document.getElementById("surveyForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let total = 0;
+      let valid = true;
+
+      // Reset lỗi cũ
+      document.querySelectorAll("input").forEach(input => input.classList.remove("error"));
+
+      for (let i = 0; i < 10; i++) {
+        const input = document.getElementById(`q${i}`);
+        const val = parseInt(input.value);
+
+        if (isNaN(val) || val < 1 || val > 5) {
+          input.classList.add("error");
+          valid = false;
+        } else {
+          total += val;
+        }
+      }
+
+      if (!valid) {
+        alert("⚠️ Vui lòng nhập đầy đủ số điểm từ 1 đến 5 cho tất cả các câu.");
+        return;
+      }
+
+      let level = "", explain = "";
+      if (total >= 43) {
+        level = "🌟 Rất tốt (Hiếm, lý tưởng)";
+        explain = "Con phát triển rất ổn định về tâm hồn – thường nhờ môi trường rất lành mạnh.";
+      } else if (total >= 35) {
+        level = "👍 Khá tốt (Phổ biến ở con ngoan)";
+        explain = "Con có nền tảng tốt, vài điểm cần cha mẹ điều chỉnh hoặc hỗ trợ thêm.";
+      } else if (total >= 28) {
+        level = "⚠️ Trung bình";
+        explain = "Con gặp khó khăn ở vài mặt (tự lập, cảm xúc, tập trung...). Cần quan sát kỹ.";
+      } else if (total >= 20) {
+        level = "🚨 Dưới trung bình";
+        explain = "Con dễ lệ thuộc, khó hoà nhập hoặc gặp tổn thương tinh thần.";
+      } else {
+        level = "❗ Nguy cơ cao";
+        explain = "Dấu hiệu bất ổn rõ rệt. Cha mẹ cần nhìn lại toàn bộ quá trình nuôi dạy và bắt đầu chuyển hoá từ chính mình.";
+      }
+
+      const resultBox = document.getElementById("result");
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `
+        <h3>Kết quả đánh giá</h3>
+        <p><strong>🔢 Tổng điểm:</strong> ${total}/50</p>
+        <p><strong>📌 Mức độ:</strong> ${level}</p>
+        <p><strong>💡 Giải thích:</strong> ${explain}</p>
+      `;
+
+      // 👉 Cuộn mượt xuống kết quả
+      resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  </script>
+
+</body>
+</html>
