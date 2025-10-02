@@ -77,6 +77,17 @@
       input[type="number"] { max-width: 70px; font-size: 16px; }
       h2 { font-size: 20px; }
     }
+	/* CSS */
+#result {
+  min-height: 150px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#result.show {
+  opacity: 1;
+  display: block; /* giữ hiển thị */
+}
+
   </style>
 </head>
 <body>
@@ -159,7 +170,20 @@
       }
 
       const resultBox = document.getElementById("result");
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `
+        <h3>Kết quả đánh giá</h3>
+        <p><strong>🔢 Tổng điểm:</strong> ${total}/50</p>
+        <p><strong>📌 Mức độ:</strong> ${level}</p>
+        <p><strong>💡 Giải thích:</strong> ${explain}</p>
+      `;
+
+      // 👉 Cuộn mượt xuống kết quả
+      resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+	// JS
 const resultBox = document.getElementById("result");
+resultBox.style.display = "block"; // Giữ nguyên gốc
 resultBox.innerHTML = `
   <h3>Kết quả đánh giá</h3>
   <p><strong>🔢 Tổng điểm:</strong> ${total}/50</p>
@@ -167,8 +191,6 @@ resultBox.innerHTML = `
   <p><strong>💡 Giải thích:</strong> ${explain}</p>
 `;
 resultBox.classList.add("show");
-
-// Scroll mượt nhưng không đẩy layout
 resultBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
   </script>
