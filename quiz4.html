@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -31,17 +31,25 @@
     label {
       font-size: 16px;
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       line-height: 1.4;
     }
-    input[type="number"] {
-      width: 100%;
-      max-width: 80px;
-      padding: 10px;
-      font-size: 18px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+
+    /* ⭐ rating */
+    .stars {
+      display: flex;
+      gap: 8px;
+      font-size: 22px;
+      cursor: pointer;
     }
+    .star {
+      color: #ccc;
+      transition: 0.2s;
+    }
+    .star.selected {
+      color: #fbc02d;
+    }
+
     button {
       background-color: #4caf50;
       color: white;
@@ -69,20 +77,18 @@
     }
     #result h3 { color: #00796b; font-size: 20px; margin-bottom: 12px; }
 
-    .error { border: 2px solid red !important; }
-
     /* Responsive */
     @media (max-width: 480px) {
       label { font-size: 15px; }
-      input[type="number"] { max-width: 70px; font-size: 16px; }
       h2 { font-size: 20px; }
+      .stars { font-size: 20px; }
     }
   </style>
 </head>
 <body>
 
   <h2>📋 Cha mẹ tự đánh giá</h2>
-  <p>Chấm điểm từ 1 đến 5 cho mỗi câu, trong đó 1 = hoàn toàn chưa đúng, 5 = hoàn toàn đúng với bạn</p>
+  <p>Chọn số sao từ 1 đến 5 cho mỗi câu, trong đó 1 = hoàn toàn chưa đúng, 5 = hoàn toàn đúng với bạn</p>
   <form id="surveyForm">
     <div id="questions"></div>
     <button type="submit">📊 Xem kết quả</button>
@@ -109,10 +115,30 @@
       const div = document.createElement("div");
       div.className = "question";
       div.innerHTML = `
-        <label for="q${i}">${i + 1}. ${q}</label>
-        <input type="number" id="q${i}" name="q${i}" min="1" max="5" required>
+        <label>${i + 1}. ${q}</label>
+        <div class="stars" data-q="${i}">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
       `;
       qContainer.appendChild(div);
+    });
+
+    // Xử lý chọn sao
+    document.querySelectorAll(".stars").forEach(starGroup => {
+      const stars = starGroup.querySelectorAll(".star");
+      stars.forEach(star => {
+        star.addEventListener("click", () => {
+          const val = parseInt(star.dataset.value);
+          stars.forEach((s, idx) => {
+            s.classList.toggle("selected", idx < val);
+          });
+          starGroup.setAttribute("data-selected", val);
+        });
+      });
     });
 
     document.getElementById("surveyForm").addEventListener("submit", function(e) {
@@ -120,22 +146,19 @@
       let total = 0;
       let valid = true;
 
-      document.querySelectorAll("input").forEach(input => input.classList.remove("error"));
-
-      for (let i = 0; i < 10; i++) {
-        const input = document.getElementById(`q${i}`);
-        const val = parseInt(input.value);
-
-        if (isNaN(val) || val < 1 || val > 5) {
-          input.classList.add("error");
+      document.querySelectorAll(".stars").forEach(group => {
+        const val = parseInt(group.getAttribute("data-selected"));
+        if (isNaN(val)) {
+          group.style.border = "2px solid red";
           valid = false;
         } else {
+          group.style.border = "none";
           total += val;
         }
-      }
+      });
 
       if (!valid) {
-        alert("⚠️ Vui lòng nhập đầy đủ số điểm từ 1 đến 5 cho tất cả các câu.");
+        alert("⚠️ Vui lòng chọn số sao cho tất cả các câu.");
         return;
       }
 
@@ -165,7 +188,6 @@
         <p><strong>📌 Đánh giá:</strong> ${level}</p>
         <p><strong>💡 Ý nghĩa:</strong> ${explain}</p>
       `;
-
       resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   </script>
