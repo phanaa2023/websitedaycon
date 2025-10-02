@@ -159,17 +159,18 @@
       }
 
       const resultBox = document.getElementById("result");
-      resultBox.style.display = "block";
-      resultBox.innerHTML = `
-        <h3>Kết quả đánh giá</h3>
-        <p><strong>🔢 Tổng điểm:</strong> ${total}/50</p>
-        <p><strong>📌 Mức độ:</strong> ${level}</p>
-        <p><strong>💡 Giải thích:</strong> ${explain}</p>
-      `;
+const resultBox = document.getElementById("result");
+resultBox.innerHTML = `
+  <h3>Kết quả đánh giá</h3>
+  <p><strong>🔢 Tổng điểm:</strong> ${total}/50</p>
+  <p><strong>📌 Mức độ:</strong> ${level}</p>
+  <p><strong>💡 Giải thích:</strong> ${explain}</p>
+`;
+resultBox.classList.add("show");
 
-      // 👉 Cuộn mượt xuống kết quả
-      resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+// Scroll mượt nhưng không đẩy layout
+resultBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
   </script>
 
 </body>

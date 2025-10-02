@@ -336,3 +336,19 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
   font-size: 18px;       /* nhấn mạnh riêng đoạn này */
 }
 
+#result {
+  margin-top: 30px;
+  padding: 20px;
+  background: #e0f7fa;
+  border-left: 6px solid #00acc1;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  
+  /* Thêm */
+  min-height: 150px;       /* giữ chỗ, tránh nhảy layout */
+  opacity: 0;               /* ban đầu ẩn */
+  transition: opacity 0.3s ease;
+}
+#result.show {
+  opacity: 1;               /* hiển thị */
+}
