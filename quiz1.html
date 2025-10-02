@@ -64,15 +64,8 @@
       background: #e0f7fa;
       border-left: 6px solid #00acc1;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      min-height: 150px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
       display: none;
-    }
-    #result.show {
-      opacity: 1;
-      display: block; /* giữ hiển thị */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
     #result h3 { color: #00796b; font-size: 20px; margin-bottom: 12px; }
 
@@ -166,17 +159,16 @@
       }
 
       const resultBox = document.getElementById("result");
-      resultBox.style.display = "block"; // giữ hiển thị
+      resultBox.style.display = "block";
       resultBox.innerHTML = `
         <h3>Kết quả đánh giá</h3>
         <p><strong>🔢 Tổng điểm:</strong> ${total}/50</p>
         <p><strong>📌 Mức độ:</strong> ${level}</p>
         <p><strong>💡 Giải thích:</strong> ${explain}</p>
       `;
-      resultBox.classList.add("show");
 
-      // Cuộn mượt nhưng không nhảy layout
-      resultBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      // 👉 Cuộn mượt xuống kết quả
+      resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   </script>
 
