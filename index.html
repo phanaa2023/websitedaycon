@@ -183,6 +183,7 @@
 
     </main>
 <!-- Testimonials Section -->
+<!-- Testimonials Section -->
 <section class="testimonials">
   <h2>Đánh giá của học viên</h2>
 
@@ -224,18 +225,20 @@
   font-size: 22px;
   margin-bottom: 15px;
   color: #348C90;
-  text-align: center;   /* căn giữa */
+  text-align: center;
   width: 100%;
   display: block;
 }
 
 .slider-container {
   gap: 10px;
+  width: 100%;
 }
 
 .slider-wrapper {
-  overflow: hidden;   /* ngăn tràn ngang */
-  width: 100%;
+  overflow: hidden;
+  width: calc(100% - 10px); /* thụt vào 5px mỗi bên */
+  margin: 0 auto;          /* căn giữa */
   max-width: 100%;
 }
 
@@ -273,14 +276,17 @@
   font-size: 20px;
   border-radius: 5px;
   cursor: pointer;
+  transition: opacity 0.3s;
 }
 
 .prev-slide:hover, .next-slide:hover {
   background: #2e7679;
 }
 
-.prev-slide.hidden {
-  display: none;
+/* Trạng thái mờ đi thay vì biến mất */
+.prev-slide.disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 </style>
 
@@ -301,9 +307,9 @@ const nextBtn = document.querySelector(".next-slide");
 // Hàm cập nhật trạng thái nút
 function updateButtons() {
   if (index === 0) {
-    prevBtn.classList.add("hidden");
+    prevBtn.classList.add("disabled");
   } else {
-    prevBtn.classList.remove("hidden");
+    prevBtn.classList.remove("disabled");
   }
 }
 
@@ -333,6 +339,7 @@ updateButtons();
 
 // --- Nút điều khiển ---
 prevBtn.addEventListener("click", () => {
+  if (prevBtn.classList.contains("disabled")) return; // không cho click khi disabled
   stopAutoSlide();
   if (index > 0) {
     index--;
@@ -349,7 +356,6 @@ nextBtn.addEventListener("click", () => {
   startAutoSlide();
 });
 </script>
-
 
 
 	
