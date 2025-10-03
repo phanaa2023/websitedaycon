@@ -183,48 +183,56 @@
 
     </main>
 <!-- Testimonials Section -->
-<!-- Testimonials Section -->
 <section class="testimonials">
-  <h2>Đánh giá của học viên</h2>
+  <div class="testimonials-box">
+    <h2>Đánh giá của học viên</h2>
 
-  <div class="slider-container" style="position: relative; display: flex; align-items: center; justify-content: center;">
-    <!-- Nút điều khiển ngoài slider -->
-    <button class="prev-slide">&#10094;</button>
+    <div class="slider-container">
+      <!-- Nút điều khiển ngoài slider -->
+      <button class="prev-slide">&#10094;</button>
 
-    <div class="slider-wrapper">
-      <div class="slider" id="testimonial-slider">
-        <div class="slide">
-          <h3>Nguyễn Văn Tùng</h3>
-          <p class="role">Phụ huynh, 42 tuổi</p>
-          <div class="stars">★★★★★</div>
-          <p class="review">Khóa học này rất bổ ích, giá trị.</p>
-        </div>
+      <div class="slider-wrapper">
+        <div class="slider" id="testimonial-slider">
+          <div class="slide">
+            <h3>Nguyễn Văn Tùng</h3>
+            <p class="role">Phụ huynh, 42 tuổi</p>
+            <div class="stars">★★★★★</div>
+            <p class="review">Khóa học này rất bổ ích, giá trị.</p>
+          </div>
 
-        <div class="slide">
-          <h3>Trần Thị Lan</h3>
-          <p class="role">Phụ huynh, 31 tuổi</p>
-          <div class="stars">★★★★★</div>
-          <p class="review">Áp dụng khóa học vào thực tế rất hay, con ngoan hơn.</p>
-        </div>
+          <div class="slide">
+            <h3>Trần Thị Lan</h3>
+            <p class="role">Phụ huynh, 31 tuổi</p>
+            <div class="stars">★★★★★</div>
+            <p class="review">Áp dụng khóa học vào thực tế rất hay, con ngoan hơn.</p>
+          </div>
 
-        <div class="slide">
-          <h3>Phạm Văn Hòa</h3>
-          <p class="role">Phụ huynh, 37 tuổi</p>
-          <div class="stars">★★★★★</div>
-          <p class="review">Mình học được nhiều cách dạy con mà trước đây không nghĩ tới.</p>
+          <div class="slide">
+            <h3>Phạm Văn Hòa</h3>
+            <p class="role">Phụ huynh, 37 tuổi</p>
+            <div class="stars">★★★★★</div>
+            <p class="review">Mình học được nhiều cách dạy con mà trước đây không nghĩ tới.</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <button class="next-slide">&#10095;</button>
+      <button class="next-slide">&#10095;</button>
+    </div>
   </div>
 </section>
 
+
 <style>
 .testimonials {
-  max-width: 800px;     /* Giới hạn ngang bằng phần quà tặng */
-  margin: 0 auto;       /* Căn giữa */
-  padding: 0 10px;      /* Thụt vào cho đẹp trên mobile */
+  padding: 20px 10px;
+}
+
+.testimonials-box {
+  background: #fff;       /* nền xám nhạt */
+  border-radius: 12px;       /* bo góc giống khung quà tặng */
+  padding: 20px;
+  max-width: 800px;          /* giới hạn bề ngang */
+  margin: 0 auto;            /* căn giữa */
 }
 
 .testimonials h2 {
@@ -261,7 +269,7 @@
 .slide {
   flex: 0 0 100%;
   box-sizing: border-box;
-  background: #fff;
+  background: #f9f9f9;
   padding: 15px 12px;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
