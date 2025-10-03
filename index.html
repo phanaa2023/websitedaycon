@@ -195,6 +195,140 @@
     💬 Liên hệ Fanpage để nhận ưu đãi
   </a>
 </div>
+<div class="featured-quote">
+  <h2 style="color:#348C90; margin-bottom:15px;">Lời khuyên từ chuyên gia</h2>
+  <blockquote>
+    <p>“Mọi phụ huynh đều nên học và áp dụng khóa học này, đây là những kiến thức giúp con phát triển toàn diện, vì nhà trường không thể thay thế sự quan tâm và dẫn dắt của cha mẹ.”</p>
+    <footer>— Thầy Tuấn, Chuyên gia giáo dục</footer>
+  </blockquote>
+</div>
+
+<style>
+  .featured-quote blockquote {
+    border-left: 4px solid #348C90;
+    margin: 0;
+    padding-left: 15px;
+    font-style: italic;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .featured-quote blockquote footer {
+    margin-top: 10px;
+    font-weight: bold;
+    font-style: normal;
+    color: #555;
+  }
+</style>
+
+<!-- Chat bubble review -->
+<h3 style="color:#348C90; margin-top:30px; margin-bottom:10px; text-align: left;">
+  Phản hồi của phụ huynh:
+</h3>
+
+
+<div id="chatReviewContainer"></div>
+
+<style>
+  .chat-bubble {
+    display: flex;
+    align-items: flex-start; /* thay vì center */
+    gap: 10px;
+    margin: 10px 0;
+    max-width: 420px;
+    font-family: Arial, sans-serif;
+  }
+
+  .chat-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    box-sizing: border-box;
+    padding: 0;                 /* không để padding làm to khung */
+    border-radius: 50%;
+    display: inline-flex;       /* chắc chắn là flex để căn chữ giữa */
+    align-items: center;
+    justify-content: center;
+    background: #348C90;        /* màu nền avatar */
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1;             /* tránh line-height lớn làm tăng chiều cao */
+    text-align: center;
+    white-space: nowrap;        /* không cho chữ xuống dòng */
+    overflow: hidden;           /* che phần dư nếu có */
+  }
+
+  .chat-content {
+    background: #f0f2f5; /* màu bong bóng kiểu Facebook */
+    padding: 10px 14px;
+    border-radius: 15px;
+    color: #050505;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+
+  .chat-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .chat-text {
+    font-size: 14px;
+    text-align: left;
+  }
+</style>
+
+<script>
+  const reviewData = [
+    { name: "Nguyễn Lan", text: "Khóa học rất dễ áp dụng vào thực tế." },
+    { name: "Trần Hồng Anh", text: "Những cuốn sách được tặng phải nói là cực kỳ quý giá và giá trị." },
+    { name: "Phạm Văn Minh", text: "Phương pháp chuyển hóa tâm thức con cái rất mới mẻ và hiệu quả." },
+    { name: "Lê Thu Hà", text: "Khóa học rất bổ ích, đúng với nhu cầu của phụ huynh hiện nay." },
+    { name: "Hoàng Thị Mai", text: "Nội dung dễ hiểu, dễ áp dụng." },
+    { name: "Vũ Thanh Tùng", text: "Tôi thấy con mình thay đổi rõ rệt sau khi áp dụng theo khóa học." },
+    { name: "Đặng Bích Ngọc", text: "Khóa học có nhiều ví dụ thực tế, dễ làm theo." },
+    { name: "Ngô Hải Yến", text: "Tài liệu tặng kèm quá tuyệt vời." },
+    { name: "Bùi Thảo", text: "Khóa học và những cuốn sách tặng kèm giúp tôi rất nhiều trong việc dạy con." },
+    { name: "Đỗ Quang Huy", text: "Khóa học tuyệt vời, đáng để giới thiệu cho bạn bè." }
+  ];
+
+  function getInitials(name) {
+    const parts = name.trim().split(/\s+/);
+    return parts.map(p => p[0]).join("").toUpperCase().slice(0, 3);
+  }
+
+  const container = document.getElementById("chatReviewContainer");
+  let currentIndex = 0; // theo dõi bình luận hiện tại
+
+  function showSequentialReview() {
+    const review = reviewData[currentIndex];
+    const initials = getInitials(review.name);
+
+    container.innerHTML = `
+      <div class="chat-bubble" role="status" aria-live="polite">
+        <div class="chat-avatar" aria-hidden="true">${initials}</div>
+        <div class="chat-content">
+          <div class="chat-name">${review.name}</div>
+          <div class="chat-text">${review.text}</div>
+        </div>
+      </div>
+    `;
+
+    currentIndex = (currentIndex + 1) % reviewData.length; // quay vòng
+  }
+
+  // hiển thị bình luận đầu tiên ngay khi load
+  showSequentialReview();
+
+  // thay đổi định kỳ mỗi 6 giây
+  setInterval(showSequentialReview, 6000);
+</script>
+
+
 </footer>
 
 
