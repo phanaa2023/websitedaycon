@@ -235,17 +235,21 @@
 
 .slider-wrapper {
   overflow: hidden;
-  width: 80%;
+  width: 100%;         /* chiếm đúng màn hình */
+  max-width: 100%;     /* không vượt */
 }
 
 .slider {
   display: flex;
-  gap: 15px;
   transition: transform 0.5s ease;
+  will-change: transform;
+  /* bỏ gap để không cộng thêm bề ngang ngoài ý muốn */
 }
 
 .slide {
-  flex: 0 0 100%;
+  flex: 0 0 100%;       /* đúng 100% màn hình */
+  box-sizing: border-box;
+  margin-right: 15px;   /* thay gap bằng margin-right để kiểm soát */
   background: #fff;
   padding: 15px 12px;
   border-radius: 10px;
@@ -460,4 +464,3 @@ document.getElementById("unlockBtn").addEventListener("click", () => {
     <script src="script.js"></script>
 </body>
 </html>
-
