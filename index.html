@@ -188,7 +188,7 @@
     <h2>Đánh giá của học viên</h2>
 
     <div class="slider-container">
-      <!-- Nút điều khiển ngoài slider -->
+      <!-- Nút điều khiển -->
       <button class="prev-slide">&#10094;</button>
 
       <div class="slider-wrapper">
@@ -221,18 +221,17 @@
   </div>
 </section>
 
-
 <style>
 .testimonials {
   padding: 20px 10px;
 }
 
 .testimonials-box {
-  background: #fff;       /* nền xám nhạt */
-  border-radius: 12px;       /* bo góc giống khung quà tặng */
+  background: #fff;
+  border-radius: 12px;
   padding: 20px;
-  max-width: 800px;          /* giới hạn bề ngang */
-  margin: 0 auto;            /* căn giữa */
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .testimonials h2 {
@@ -276,29 +275,28 @@
   text-align: left;
 }
 
-/* chỉ chèn khoảng cách cho slide không phải cuối */
 .slide:not(:last-child) {
   margin-right: 15px;
 }
 
-.slide h3 { 
-  margin: 0 0 3px; 
-  font-size: 17px; 
+.slide h3 {
+  margin: 0 0 3px;
+  font-size: 17px;
 }
-.slide .role { 
-  font-size: 13px; 
-  color: #666; 
-  margin: 0 0 3px; 
+.slide .role {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 3px;
 }
-.slide .stars { 
-  color: #f5b50a; 
-  font-size: 14px; 
-  margin: 0 0 3px; 
+.slide .stars {
+  color: #f5b50a;
+  font-size: 14px;
+  margin: 0 0 3px;
 }
-.slide .review { 
-  font-size: 14px; 
-  margin: 0; 
-  line-height: 1.3; 
+.slide .review {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.3;
 }
 
 .prev-slide, .next-slide {
@@ -316,29 +314,35 @@
   background: #2e7679;
 }
 
-/* Trạng thái mờ đi thay vì biến mất */
 .prev-slide.disabled {
   opacity: 0.4;
   cursor: default;
 }
-
 </style>
 
 <script>
 const slider = document.getElementById("testimonial-slider");
-const slides = slider.children;
-let autoSlideInterval;
 
-// Nhân đôi slides để loop mượt
+// Nhân đôi slides trước
 slider.innerHTML += slider.innerHTML;
 
+// Lấy lại danh sách slide sau khi nhân đôi
+let slides = slider.children;
 let slideWidth = slides[0].offsetWidth + 15;
 let index = 0;
+let autoSlideInterval;
 
 const prevBtn = document.querySelector(".prev-slide");
 const nextBtn = document.querySelector(".next-slide");
 
-// Hàm cập nhật trạng thái nút
+// Cập nhật lại khi resize
+window.addEventListener("resize", () => {
+  slideWidth = slides[0].offsetWidth + 15;
+  slider.style.transition = "none";
+  slider.style.transform = `translateX(-${index * slideWidth}px)`;
+});
+
+// Hàm cập nhật nút
 function updateButtons() {
   if (index === 0) {
     prevBtn.classList.add("disabled");
@@ -368,12 +372,13 @@ function startAutoSlide() {
 function stopAutoSlide() {
   clearInterval(autoSlideInterval);
 }
+
 startAutoSlide();
 updateButtons();
 
 // --- Nút điều khiển ---
 prevBtn.addEventListener("click", () => {
-  if (prevBtn.classList.contains("disabled")) return; // không cho click khi disabled
+  if (prevBtn.classList.contains("disabled")) return;
   stopAutoSlide();
   if (index > 0) {
     index--;
