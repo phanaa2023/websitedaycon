@@ -6,7 +6,7 @@
   <title>Chuyển hoá tâm thức con cái</title>
    <!-- Google Fonts: Quicksand -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -74,10 +74,10 @@
 </div>
 
 <div class="quiz-buttons"> 
-  <button onclick="openQuiz('/quiz1.html')">📝 Độ tuổi Mầm non (0–6 tuổi)</button>
-  <button onclick="openQuiz('/quiz2.html')">📝 Độ tuổi Tiểu học (6–12 tuổi)</button>
-  <button onclick="openQuiz('/quiz3.html')">📝 Tuổi Teen (13–18 tuổi)</button>
-  <button onclick="openQuiz('/quiz4.html')">📝 Chấm điểm cha mẹ</button>
+  <button onclick="openQuiz('quiz1.html')">📝 Độ tuổi Mầm non (0–6 tuổi)</button>
+  <button onclick="openQuiz('quiz2.html')">📝 Độ tuổi Tiểu học (6–12 tuổi)</button>
+  <button onclick="openQuiz('quiz3.html')">📝 Tuổi Teen (13–18 tuổi)</button>
+  <button onclick="openQuiz('quiz4.html')">📝 Chấm điểm cha mẹ</button>
 </div>
 
 <!-- Popup quiz -->
@@ -182,6 +182,168 @@
 
 
     </main>
+<!-- Testimonials Section -->
+<section class="testimonials">
+  <h2>Đánh giá của học viên</h2>
+
+  <div class="slider-wrapper">
+    <div class="slider" id="testimonial-slider">
+      <div class="slide">
+        <h3>Nguyễn Văn Tùng</h3>
+        <p class="role">Phụ huynh, 42 tuổi</p>
+        <div class="stars">★★★★★</div>
+        <p class="review">Khóa học này rất bổ ích, giá trị.</p>
+      </div>
+
+      <div class="slide">
+        <h3>Trần Thị Lan</h3>
+        <p class="role">Phụ huynh, 31 tuổi</p>
+        <div class="stars">★★★★★</div>
+        <p class="review">Áp dụng khóa học vào thực tế rất hay, con ngoan hơn.</p>
+      </div>
+
+      <div class="slide">
+        <h3>Phạm Văn Hòa</h3>
+        <p class="role">Phụ huynh, 37 tuổi</p>
+        <div class="stars">★★★★★</div>
+        <p class="review">Mình học được nhiều cách dạy con mà trước đây không nghĩ tới.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.testimonials {
+  padding: 30px 15px;
+  text-align: center;
+  background: #fff; /* nền trắng toàn bộ */
+}
+
+.testimonials h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #348C90;
+}
+
+.slider-wrapper {
+  overflow: hidden;
+}
+
+.slider {
+  display: flex;
+  gap: 15px;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  flex: 0 0 80%;
+  background: #fff;
+  padding: 15px 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-align: left;
+}
+
+.slide h3 {
+  margin: 0 0 3px;
+  font-size: 17px;
+}
+
+.slide .role {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 3px;
+}
+
+.slide .stars {
+  color: #f5b50a;
+  font-size: 14px;
+  margin: 0 0 3px;
+}
+
+.slide .review {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.3; /* dồn sát hơn */
+}
+</style>
+
+<script>
+const slider = document.getElementById("testimonial-slider");
+const slides = slider.children;
+let autoSlideInterval;
+
+// Nhân đôi slides để loop mượt
+slider.innerHTML += slider.innerHTML;  
+
+let slideWidth = slides[0].offsetWidth + 20;
+let index = 0;
+
+// Auto slide
+function autoSlide() {
+  index++;
+  slider.style.transition = "transform 0.5s ease";
+  slider.style.transform = `translateX(-${index * slideWidth}px)`;
+
+  // reset nếu đến cuối
+  if (index >= slides.length / 2) {
+    setTimeout(() => {
+      slider.style.transition = "none";
+      index = 0;
+      slider.style.transform = `translateX(0px)`;
+    }, 500);
+  }
+}
+
+function startAutoSlide() {
+  autoSlideInterval = setInterval(autoSlide, 4000);
+}
+function stopAutoSlide() {
+  clearInterval(autoSlideInterval);
+}
+startAutoSlide();
+
+// Kéo bằng chuột (desktop) + vuốt (mobile)
+let isDown = false;
+let startX, movedX;
+
+slider.parentElement.addEventListener("mousedown", (e) => {
+  isDown = true;
+  startX = e.pageX;
+  stopAutoSlide();
+});
+slider.parentElement.addEventListener("mouseup", (e) => {
+  if (!isDown) return;
+  isDown = false;
+  movedX = e.pageX - startX;
+  if (movedX < -50) autoSlide(); // kéo sang trái
+  else if (movedX > 50) {
+    index = index <= 0 ? 0 : index - 1;
+    slider.style.transition = "transform 0.5s ease";
+    slider.style.transform = `translateX(-${index * slideWidth}px)`;
+  }
+  startAutoSlide();
+});
+
+// Mobile touch
+let touchStartX = 0;
+slider.parentElement.addEventListener("touchstart", (e) => {
+  touchStartX = e.touches[0].clientX;
+  stopAutoSlide();
+});
+slider.parentElement.addEventListener("touchend", (e) => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const moved = touchEndX - touchStartX;
+  if (moved < -50) autoSlide();
+  else if (moved > 50) {
+    index = index <= 0 ? 0 : index - 1;
+    slider.style.transition = "transform 0.5s ease";
+    slider.style.transform = `translateX(-${index * slideWidth}px)`;
+  }
+  startAutoSlide();
+});
+</script>
+
 	
 <footer>
   <div class="footer-offer">
@@ -295,6 +457,6 @@ document.getElementById("unlockBtn").addEventListener("click", () => {
 </script>
 
   <!-- Nội dung test code -->
-    <script src="/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
