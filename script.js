@@ -2,7 +2,7 @@
  *  CẤU HÌNH
  ******************************/
 const API_URL = "https://script.google.com/macros/s/AKfycbzE37iPjsiLszaAVdyECYkjkvMLmvWaVZ5sapGZkyb0a2qp7sOiKAhjGzkRQRBxAmIHlw/exec"; 
-// TODO: thay bằng Web App URL của Apps Script của bạn
+// TODO: thay bằng Web App URL của Apps Script của bạn nếu bạn deploy lại
 
 /******************************
  *  TIỆN ÍCH
@@ -58,7 +58,7 @@ async function handleUnlock() {
     return;
   }
 
-  // 🔧 CHỈNH CHỖ NÀY: ép về lowercase + trim để tránh lỗi trên điện thoại
+  // Ép về lowercase + trim để tránh lỗi gõ trên điện thoại / copy-paste
   const userCode = (input.value || "").trim().toLowerCase();
   if (!userCode) {
     alert("Vui lòng nhập mã!");
@@ -71,8 +71,10 @@ async function handleUnlock() {
   try {
     const resp = await checkCodeViaApi(userCode);
     if (resp.status === "ok") {
-      // Ghi nhớ trạng thái đã mở khóa trên thiết bị này
+      // Ghi nhớ trạng thái đã mở khóa & mã đã dùng
       localStorage.setItem("course_unlocked", "1");
+      localStorage.setItem("last_code", userCode);
+
       course.classList.remove("hidden");
       // Scroll tới nội dung
       window.scrollTo({ top: course.offsetTop, behavior: "smooth" });
@@ -89,23 +91,34 @@ async function handleUnlock() {
 }
 
 /******************************
- *  SỰ KIỆN UI
+ *  SỰ KIỆN UI (CÓ KIỂM TRA LẠI MÃ)
  ******************************/
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const input = document.getElementById("code");
   const btn = document.getElementById("unlockBtn");
   const course = document.getElementById("course");
 
-  // Nếu trước đó đã mở khóa trên thiết bị này thì hiển thị luôn
+  // Nếu đã mở khóa trước đó, xác minh lại với server xem còn hợp lệ không
   try {
-    if (localStorage.getItem("course_unlocked") === "1" && course) {
-      course.classList.remove("hidden");
+    const unlocked = localStorage.getItem("course_unlocked");
+    const lastCode = localStorage.getItem("last_code");
+    if (unlocked === "1" && lastCode) {
+      const resp = await checkCodeViaApi(lastCode.trim().toLowerCase());
+      if (resp.status === "ok") {
+        course.classList.remove("hidden");
+      } else {
+        // Mã đã hết hạn/bị xóa → reset & yêu cầu nhập lại
+        localStorage.removeItem("course_unlocked");
+        localStorage.removeItem("last_code");
+        course.classList.add("hidden");
+        alert("Mã đã hết hạn hoặc không còn hợp lệ, vui lòng nhập lại!");
+      }
     }
-  } catch (_) {}
-
-  if (btn) {
-    btn.addEventListener("click", handleUnlock);
+  } catch (err) {
+    console.error("Không thể xác minh mã khi tải trang:", err);
   }
+
+  if (btn) btn.addEventListener("click", handleUnlock);
   if (input) {
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") handleUnlock();
@@ -113,12 +126,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Popup quiz giữ nguyên
+/******************************
+ *  POPUP QUIZ (nếu có)
+ ******************************/
 window.openQuiz = function(file) {
-  document.getElementById("quizFrame").src = file;
-  document.getElementById("quizPopup").classList.add("active");
+  const frame = document.getElementById("quizFrame");
+  const popup = document.getElementById("quizPopup");
+  if (frame && popup) {
+    frame.src = file;
+    popup.classList.add("active");
+  }
 }
+
 window.closeQuiz = function() {
-  document.getElementById("quizPopup").classList.remove("active");
-  document.getElementById("quizFrame").src = "";
+  const frame = document.getElementById("quizFrame");
+  const popup = document.getElementById("quizPopup");
+  if (frame && popup) {
+    popup.classList.remove("active");
+    frame.src = "";
+  }
 }
