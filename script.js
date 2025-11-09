@@ -1,7 +1,7 @@
 /******************************
  *  CẤU HÌNH
  ******************************/
-const API_URL = "https://script.google.com/macros/s/AKfycbzvMlkiZ10DrOZZB3J0D1oC31Nqsacv9BRVZt2ojpRIhMibB8Bjc3MpoNi9cwkVkLW7jA/exec"; 
+const API_URL = "https://script.google.com/macros/s/AKfycbzE37iPjsiLszaAVdyECYkjkvMLmvWaVZ5sapGZkyb0a2qp7sOiKAhjGzkRQRBxAmIHlw/exec"; 
 // TODO: thay bằng Web App URL của Apps Script của bạn
 
 /******************************
