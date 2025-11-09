@@ -7,7 +7,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzE37iPjsiLszaAVdyECYkj
 /******************************
  *  TIỆN ÍCH
  ******************************/
-// UUID v4 mini để tạo deviceId ổn định cho mỗi thiết bị (lưu trong localStorage)
+// UUID v4 mini để tạo deviceId ổn định cho mỗi thiết bị (cần cho giới hạn 2 thiết bị)
 function getDeviceId() {
   const KEY = "device_id";
   let id = localStorage.getItem(KEY);
@@ -37,7 +37,8 @@ function setButtonLoading(btn, isLoading, loadingText = "Đang kiểm tra...") {
  ******************************/
 async function checkCodeViaApi(userCode) {
   const deviceId = getDeviceId();
-  const url = `${API_URL}?action=check&code=${encodeURIComponent(userCode)}&device=${encodeURIComponent(deviceId)}`;
+  // Thêm cache-buster nhẹ để tránh cache CDN hiếm khi xảy ra
+  const url = `${API_URL}?action=check&code=${encodeURIComponent(userCode)}&device=${encodeURIComponent(deviceId)}&t=${Date.now()}`;
   const res = await fetch(url, { method: "GET" });
   if (!res.ok) throw new Error("API error: " + res.status);
   // Kết quả: {status:'ok', message:'...'} hoặc {error:'...', message:'...'}
@@ -71,52 +72,41 @@ async function handleUnlock() {
   try {
     const resp = await checkCodeViaApi(userCode);
     if (resp.status === "ok") {
-      // Ghi nhớ trạng thái đã mở khóa & mã đã dùng
-      localStorage.setItem("course_unlocked", "1");
-      localStorage.setItem("last_code", userCode);
-
+      // KHÔNG lưu trạng thái mở khoá nữa -> chỉ mở cho phiên hiện tại
       course.classList.remove("hidden");
       // Scroll tới nội dung
       window.scrollTo({ top: course.offsetTop, behavior: "smooth" });
     } else {
       // Các lỗi có thể: invalid, expired, used, header_missing, server_error...
       alert(resp.message || "Mã không hợp lệ!");
+      // Đảm bảo vẫn đang khóa
+      course.classList.add("hidden");
     }
   } catch (e) {
     console.error(e);
     alert("Không thể kiểm tra mã, vui lòng thử lại!");
+    course.classList.add("hidden");
   } finally {
     setButtonLoading(btn, false);
   }
 }
 
 /******************************
- *  SỰ KIỆN UI (CÓ KIỂM TRA LẠI MÃ)
+ *  SỰ KIỆN UI — LUÔN YÊU CẦU NHẬP MÃ MỖI LẦN VÀO
  ******************************/
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("code");
   const btn = document.getElementById("unlockBtn");
   const course = document.getElementById("course");
 
-  // Nếu đã mở khóa trước đó, xác minh lại với server xem còn hợp lệ không
+  // Luôn KHÓA nội dung khi tải trang / F5
+  if (course) course.classList.add("hidden");
+
+  // Xoá mọi dấu vết mở khoá trước đây (nếu từng dùng)
   try {
-    const unlocked = localStorage.getItem("course_unlocked");
-    const lastCode = localStorage.getItem("last_code");
-    if (unlocked === "1" && lastCode) {
-      const resp = await checkCodeViaApi(lastCode.trim().toLowerCase());
-      if (resp.status === "ok") {
-        course.classList.remove("hidden");
-      } else {
-        // Mã đã hết hạn/bị xóa → reset & yêu cầu nhập lại
-        localStorage.removeItem("course_unlocked");
-        localStorage.removeItem("last_code");
-        course.classList.add("hidden");
-        alert("Mã đã hết hạn hoặc không còn hợp lệ, vui lòng nhập lại!");
-      }
-    }
-  } catch (err) {
-    console.error("Không thể xác minh mã khi tải trang:", err);
-  }
+    localStorage.removeItem("course_unlocked");
+    localStorage.removeItem("last_code");
+  } catch (_) {}
 
   if (btn) btn.addEventListener("click", handleUnlock);
   if (input) {
