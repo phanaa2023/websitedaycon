@@ -58,7 +58,8 @@ async function handleUnlock() {
     return;
   }
 
-  const userCode = (input.value || "").trim();
+  // 🔧 CHỈNH CHỖ NÀY: ép về lowercase + trim để tránh lỗi trên điện thoại
+  const userCode = (input.value || "").trim().toLowerCase();
   if (!userCode) {
     alert("Vui lòng nhập mã!");
     input.focus();
@@ -111,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 // Popup quiz giữ nguyên
 window.openQuiz = function(file) {
   document.getElementById("quizFrame").src = file;
