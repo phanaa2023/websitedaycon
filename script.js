@@ -1,38 +1,48 @@
-async function fetchCodes() {
-  const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx5d_6E2nVNjcUSp8Y4JeNGph2lKrwZ0n6MokdabpT9ZB_uVatIazlMh67vSadsnKjyvv7h17tWRBL/pub?output=csv";
-  
-  const res = await fetch(sheetUrl);
-  const text = await res.text();
+const API_URL = "https://script.google.com/macros/s/AKfycbzvMlkiZ10DrOZZB3J0D1oC31Nqsacv9BRVZt2ojpRIhMibB8Bjc3MpoNi9cwkVkLW7jA/exec"; // dán link Apps Script Web App
 
-  const rows = text.split("\n").map(r => r.split(","));
-  // lấy cột B, chuyển hết về chữ thường
-  const codes = rows.map(r => r[1]?.trim().toLowerCase()).filter(c => c && c !== "code");
-  
-  return codes;
-}
-
-document.getElementById("unlockBtn").addEventListener("click", async function() {
-  const code = document.getElementById("code").value.trim().toLowerCase();
-  const course = document.getElementById("course");
-
-  if (!code) {
-    alert("Vui lòng nhập mã!");
-    return;
+  function getDeviceId() {
+    return btoa(navigator.userAgent + navigator.language + screen.width + screen.height);
   }
 
-  try {
-    const codes = await fetchCodes();
-    if (codes.includes(code)) {
-      course.classList.remove("hidden");
-      window.scrollTo({ top: course.offsetTop, behavior: "smooth" });
-    } else {
-      alert("Mã không hợp lệ!");
+  async function checkCode() {
+    const codeInput = document.getElementById("code");
+    const code = codeInput.value.trim();
+    const course = document.getElementById("course");
+    const device = getDeviceId();
+
+    if (!code) {
+      alert("Vui lòng nhập mã!");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert("Không thể kiểm tra mã, vui lòng thử lại!");
+
+    try {
+      const res = await fetch(`${API_URL}?action=check&code=${encodeURIComponent(code)}&device=${encodeURIComponent(device)}`);
+      const data = await res.json();
+
+      if (data.status === "ok") {
+        // lưu localStorage để lần sau tự mở khóa
+        localStorage.setItem("unlocked", "true");
+        course.classList.remove("hidden");
+        window.scrollTo({ top: course.offsetTop, behavior: "smooth" });
+        alert(data.message);
+      } else {
+        alert(data.message || "Mã không hợp lệ!");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Không thể kiểm tra mã, vui lòng thử lại!");
+    }
   }
-});
+
+  document.getElementById("unlockBtn").addEventListener("click", checkCode);
+
+  // nếu trước đó đã mở khóa trên thiết bị này
+  window.addEventListener("load", () => {
+    const course = document.getElementById("course");
+    if (localStorage.getItem("unlocked") === "true") {
+      course.classList.remove("hidden");
+    }
+  });
 window.openQuiz = function(file) {
   document.getElementById("quizFrame").src = file;
   document.getElementById("quizPopup").classList.add("active");
