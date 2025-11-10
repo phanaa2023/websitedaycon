@@ -1,3 +1,5 @@
+/* ========== GLOBAL (từ style.css gốc) ========== */
+/* [Global typography, layout] — từ file style.css ban đầu */
 body {
   font-family: "Quicksand", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-weight: 500;
@@ -10,32 +12,31 @@ body {
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: center; /* ưu tiên mobile */
+  justify-content: center;
 }
 
-
-/* ----------------- CONTAINER ----------------- */
+/* [Container] — từ file style.css ban đầu */
 .container {
   width: 100%;
-  max-width: 420px; /* giữ giới hạn mobile */
-  padding: 20px;    /* khoảng cách bên trong */
+  max-width: 420px;
+  padding: 20px;
 }
 
-/* ----------------- HEADER (theo ảnh mẫu) ----------------- */
+/* [Header] — từ file style.css ban đầu */
 header {
   text-align: center;
   margin-bottom: 18px;
   padding-top: 6px;
 }
 header .author {
-  color: #EC407A; /* rose pink */
+  color: #EC407A;
   font-weight: 700;
   letter-spacing: 1px;
   font-size: 18px;
   margin-bottom: 6px;
 }
 header h1 {
-  color: #348C90; /* teal */
+  color: #348C90;
   font-size: 36px;
   line-height: 1;
   font-weight: 900;
@@ -51,7 +52,7 @@ header h2 {
   max-width: 360px;
 }
 
-/* ----------------- INTRO TEXT ----------------- */
+/* [Intro] — từ file style.css ban đầu */
 .intro {
   margin: 16px 0 18px 0;
   padding: 0 6px;
@@ -63,7 +64,7 @@ header h2 {
   line-height: 1.6;
 }
 
-/* ----------------- UNLOCK (mã khóa) ----------------- */
+/* [Unlock] — từ file style.css ban đầu */
 .unlock {
   margin: 18px 0 22px 0;
   text-align: center;
@@ -77,11 +78,10 @@ header h2 {
 }
 .unlock .code-row {
   display: flex;
-  flex-direction: column;   /* đổi từ ngang -> dọc */
-  align-items: center;      /* căn giữa */
-  gap: 12px;                /* khoảng cách giữa input và button */
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
-
 .unlock input[type="text"],
 .unlock input[type="password"] {
   width: 68%;
@@ -107,13 +107,12 @@ header h2 {
 }
 .unlock button:active { transform: translateY(1px); }
 
-/* small screens tweak */
 @media (max-width: 360px) {
   .unlock input { width: 60%; }
   .unlock button { padding: 10px 14px; font-size: 15px; }
 }
 
-/* ----------------- MAIN / ARTICLE / VIDEO ----------------- */
+/* [Main/Article/Video] — từ file style.css ban đầu */
 main { margin-top: 6px; padding-bottom: 40px; }
 article { margin-bottom: 22px; }
 article h3 {
@@ -122,8 +121,6 @@ article h3 {
   margin-bottom: 10px;
   color: #111111;
 }
-
-/* video area (16:9) */
 .video {
   position: relative;
   width: 100%;
@@ -143,7 +140,7 @@ article h3 {
   border: 0;
 }
 
-/* caption/links under video */
+/* [Quiz Links] — từ file style.css ban đầu */
 .quiz-links { margin-top: 8px; padding-left: 6px; }
 .quiz-links li { list-style: none; margin-bottom: 6px; }
 .quiz-links a {
@@ -154,27 +151,22 @@ article h3 {
 }
 .quiz-links a:hover { text-decoration: underline; }
 
-
-/* ----------------- FOOTER ----------------- */
+/* [Footer] — từ file style.css ban đầu */
 footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; padding-bottom: 30px; }
 
-/* ----------------- HELPERS ----------------- */
+/* [Helpers] — từ file style.css ban đầu */
 .center { text-align:center; }
 .left { text-align:left; }
 .hidden { display:none !important; }
 
-/* very small phones */
 @media (max-width: 320px) {
   header h1 { font-size: 32px; }
   header h2 { font-size: 14px; }
   .unlock input { font-size: 15px; padding: 9px; }
   .unlock button { font-size: 15px; padding: 9px 12px; }
 }
-
-/* Khi xoay ngang trên điện thoại */
 @media (orientation: landscape) {
   html, body {
-    /* không cần overflow:hidden */
     width: 100%;
     height: auto;
     margin: 0;
@@ -182,7 +174,7 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
   }
   .video {
     width: 100%;
-    height: auto; /* giữ tỷ lệ 16:9 */
+    height: auto;
     padding-bottom: 56.25%;
   }
   .video iframe {
@@ -190,6 +182,8 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
     height: 100%;
   }
 }
+
+/* [Quiz Buttons] — từ style.css ban đầu */
 .quiz-buttons {
   display: flex;
   flex-direction: column;
@@ -197,7 +191,6 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
   gap: 12px;
   margin: 16px 0 24px 0;
 }
-
 .quiz-buttons button {
   padding: 12px 18px;
   width: 90%;
@@ -213,7 +206,7 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
 .quiz-buttons button:nth-child(4) { background: #3da94f; }
 .quiz-buttons button:active { transform: translateY(1px); }
 
-/* Popup */
+/* [Quiz Popup] — từ style.css ban đầu */
 .quiz-popup {
   display: none;
   position: fixed; inset: 0;
@@ -238,19 +231,18 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
   cursor: pointer; padding: 8px 12px;
   align-self: flex-end;
 }
-/* Tài liệu tặng */
+
+/* [Resources Grid] — từ style.css ban đầu */
 .resources {
   margin: 40px auto 0;
   padding: 20px;
   text-align: center;
 }
-
 .resources h2 {
   margin-bottom: 20px;
   font-size: 22px;
   color: #333;
 }
-
 .resource-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -258,20 +250,17 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
   max-width: 600px;
   margin: 0 auto;
 }
-
 .resource-card {
   background: #f9f9f9;
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-
 .resource-card h3 {
   margin-bottom: 12px;
   font-size: 18px;
   color: #222;
 }
-
 .btn-download {
   display: inline-block;
   padding: 10px 18px;
@@ -282,56 +271,152 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
   font-weight: bold;
   transition: background 0.2s;
 }
-
 .btn-download:hover {
   background: #2c6f72;
 }
 
-  .btn-fanpage {
-    display: inline-block;
-    padding: 8px 16px;
-    background: #1877F2;
-    color: #fff;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 600;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-    animation: pulse 2s infinite;
-  }
+/* [Fanpage Button] — từ style.css ban đầu */
+.btn-fanpage {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #1877F2;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+.btn-fanpage:hover {
+  transform: scale(1.08);
+  background: #0a5adf;
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
-  .btn-fanpage:hover {
-    transform: scale(1.08);
-    background: #0a5adf;
-  }
-
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
+/* [Footer Offer] — từ style.css ban đầu */
 .footer-offer {
   text-align: center;
-  font-size: 17px;       /* ↑ tăng size chữ */
-  line-height: 1.8;      /* ↑ thoáng hơn để dễ đọc */
+  font-size: 17px;
+  line-height: 1.8;
   color: #333;
   background: #f9f9f9;
-  padding: 24px;         /* ↑ thêm padding cho cân đối */
+  padding: 24px;
   border-radius: 8px;
   margin-top: 20px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
-
 .footer-offer strong {
   color: #d32f2f;
-  font-weight: 700;      /* chữ đậm hơn */
+  font-weight: 700;
 }
-
 .footer-offer span {
   display: block;
   margin-top: 10px;
   font-weight: 600;
   color: #1877f2;
-  font-size: 18px;       /* nhấn mạnh riêng đoạn này */
+  font-size: 18px;
+}
+
+/* ========== EXTRACTED FROM index.html INLINE STYLES ========== */
+/* [Benefits section] — chuyển từ <style> trong index.html */
+.benefit-list { margin-top: 20px; }
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease;
+}
+.benefit-item:hover { transform: translateX(5px); }
+.icon {
+  flex-shrink: 0;
+  font-size: 1.4em;
+  line-height: 1;
+  color: #348C90;
+}
+
+/* [Unlock placeholder italic] — chuyển từ <style> trong index.html */
+#code::placeholder {
+  font-style: italic;
+  color: #888;
+}
+
+/* [Featured quote] — chuyển từ <style> trong index.html */
+.featured-quote blockquote {
+  border-left: 4px solid #348C90;
+  margin: 0;
+  padding-left: 15px;
+  font-style: italic;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.featured-quote blockquote footer {
+  margin-top: 10px;
+  font-weight: bold;
+  font-style: normal;
+  color: #555;
+}
+
+/* [Chat bubble review styles] — chuyển từ <style> trong index.html */
+.chat-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0;
+  max-width: 420px;
+  font-family: Arial, sans-serif;
+}
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  box-sizing: border-box;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #348C90;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.chat-content {
+  background: #f0f2f5;
+  padding: 10px 14px;
+  border-radius: 15px;
+  color: #050505;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.chat-name {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 14px;
+  text-align: left;
+}
+.chat-text {
+  font-size: 14px;
+  text-align: left;
+}
+
+/* [Vimeo effect overlay] — chuyển từ <style> trong index.html */
+.effect-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
 }

@@ -1,36 +1,25 @@
 /******************************
- *  CẤU HÌNH
+ *  CẤU HÌNH (giữ nguyên từ script.js gốc)
  ******************************/
 const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWOaqTY5nvD10GK9hFsnvT8sn63wuS1WEkQj4iEeiMG-N61EdGPtt6dgnG-DdZjrzyrUC3Tf4CvKE/pub?output=csv";
-// ↑ Giữ link CSV xuất bản của bạn
 
 /******************************
- *  LẤY DANH SÁCH MÃ TỪ CSV
+ *  LẤY DANH SÁCH MÃ TỪ CSV (giữ nguyên)
  ******************************/
 async function fetchCodes() {
-  // Thêm cache-buster để hạn chế cache
   const res = await fetch(`${SHEET_CSV}&t=${Date.now()}`);
   if (!res.ok) throw new Error("CSV error: " + res.status);
-
   const text = await res.text();
-
-  // Tách dòng an toàn cho \r\n hoặc \n
   const rows = text.split(/\r?\n/).map(r => r.split(","));
-
-  // ĐỌC CỘT A (index 0), chuẩn hóa lowercase, bỏ trống
   let codes = rows.map(r => (r[0] || "").trim()).filter(Boolean);
-
-  // Bỏ hàng tiêu đề "Code" (không phân biệt hoa/thường)
   if (codes.length && codes[0].toLowerCase() === "code") {
     codes = codes.slice(1);
   }
-
-  // So khớp không phân biệt hoa/thường
   return codes.map(c => c.toLowerCase());
 }
 
 /******************************
- *  XỬ LÝ MỞ KHÓA (mỗi lần vào đều phải nhập)
+ *  XỬ LÝ MỞ KHÓA (giữ nguyên)
  ******************************/
 async function handleUnlock() {
   const input = document.getElementById("code");
@@ -44,7 +33,6 @@ async function handleUnlock() {
     return;
   }
 
-  // UI loading nhẹ
   if (btn) {
     btn.disabled = true;
     btn.dataset._text = btn.textContent;
@@ -54,7 +42,6 @@ async function handleUnlock() {
   try {
     const codes = await fetchCodes();
     if (codes.includes(code)) {
-      // KHÔNG lưu trạng thái — chỉ mở cho phiên hiện tại
       course.classList.remove("hidden");
       window.scrollTo({ top: course.offsetTop, behavior: "smooth" });
     } else {
@@ -74,14 +61,13 @@ async function handleUnlock() {
 }
 
 /******************************
- *  SỰ KIỆN UI
+ *  SỰ KIỆN UI (giữ nguyên)
  ******************************/
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("code");
   const btn = document.getElementById("unlockBtn");
   const course = document.getElementById("course");
 
-  // Luôn khóa nội dung khi tải trang / F5
   if (course) course.classList.add("hidden");
 
   if (btn) btn.addEventListener("click", handleUnlock);
@@ -90,10 +76,105 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === "Enter") handleUnlock();
     });
   }
+
+  /* ========== CHAT BUBBLE REVIEWS ==========
+     (được tách từ <script> trong index.html — hiển thị đánh giá phụ huynh tuần tự) */
+  const reviewData = [
+    { name: "Nguyễn Lan", text: "Khóa học rất dễ áp dụng vào thực tế." },
+    { name: "Trần Hồng Anh", text: "Những cuốn sách được tặng phải nói là cực kỳ quý giá và giá trị." },
+    { name: "Phạm Minh", text: "Phương pháp chuyển hóa tâm thức con cái rất mới mẻ và hiệu quả." },
+    { name: "Lê Thu Hà", text: "Khóa học rất bổ ích, đúng với nhu cầu của phụ huynh hiện nay." },
+    { name: "Hoàng Mai", text: "Nội dung dễ hiểu, dễ áp dụng." },
+    { name: "Vũ Thanh Tùng", text: "Tôi thấy con mình thay đổi rõ rệt sau khi áp dụng theo khóa học." },
+    { name: "Đặng Bích Ngọc", text: "Khóa học có nhiều ví dụ thực tế, dễ làm theo." },
+    { name: "Ngô Hải Yến", text: "Tài liệu tặng kèm quá tuyệt vời." },
+    { name: "Bùi Thảo", text: "Khóa học và những cuốn sách tặng kèm giúp tôi rất nhiều trong việc dạy con." },
+    { name: "Đỗ Quang Huy", text: "Khóa học tuyệt vời, đáng để giới thiệu cho bạn bè." }
+  ];
+
+  const container = document.getElementById("chatReviewContainer");
+  if (container) {
+    function getInitials(name) {
+      const parts = name.trim().split(/\s+/);
+      return parts.map(p => p[0]).join("").toUpperCase().slice(0, 3);
+    }
+    let currentIndex = 0;
+    function showSequentialReview() {
+      const review = reviewData[currentIndex];
+      const initials = getInitials(review.name);
+      container.innerHTML = `
+        <div class="chat-bubble" role="status" aria-live="polite">
+          <div class="chat-avatar" aria-hidden="true">${initials}</div>
+          <div class="chat-content">
+            <div class="chat-name">${review.name}</div>
+            <div class="chat-text">${review.text}</div>
+          </div>
+        </div>
+      `;
+      currentIndex = (currentIndex + 1) % reviewData.length;
+    }
+    showSequentialReview();
+    setInterval(showSequentialReview, 6000);
+  }
+
+  /* ========== VIMEO PLAY EFFECT ==========
+     (được tách từ <script> trong index.html — hiệu ứng hoa/tuyết rơi khi video phát) */
+  if (window.Vimeo && document.querySelectorAll("iframe[src*='vimeo.com']").length) {
+    function createParticle(type, container) {
+      const particle = document.createElement("div");
+      particle.classList.add("particle");
+
+      if (type === "flower") {
+        particle.textContent = "🌸";
+        particle.style.fontSize = Math.random() * 4 + 6 + "px";
+      } else {
+        const size = Math.random() * 6 + 4;
+        particle.style.width = particle.style.height = size + "px";
+        const colors = ["yellow", "red", "deepskyblue", "lime", "orange"];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.background = color;
+        particle.style.borderRadius = "50%";
+        particle.style.boxShadow = `0 0 ${size * 1.5}px ${color}`;
+      }
+
+      particle.style.position = "absolute";
+      particle.style.left = Math.random() * 100 + "%";
+      particle.style.top = "-20px";
+      particle.style.opacity = 0.9;
+      particle.style.transition = "transform 8s linear, top 8s linear, opacity 8s";
+
+      container.appendChild(particle);
+
+      setTimeout(() => {
+        particle.style.top = "100%";
+        particle.style.transform = `translateX(${Math.random() * 100 - 50}px) rotate(${Math.random() * 360}deg)`;
+        particle.style.opacity = 0.2;
+      }, 100);
+
+      setTimeout(() => particle.remove(), 9000);
+    }
+
+    function startEffect(container) {
+      const interval = setInterval(() => {
+        const type = Math.random() > 0.5 ? "flower" : "snow";
+        createParticle(type, container);
+      }, 200);
+      setTimeout(() => clearInterval(interval), 10000);
+    }
+
+    document.querySelectorAll("iframe[src*='vimeo.com']").forEach((iframe) => {
+      const player = new Vimeo.Player(iframe);
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("effect-layer");
+      iframe.parentNode.style.position = "relative";
+      iframe.parentNode.appendChild(wrapper);
+      player.on("play", () => startEffect(wrapper));
+    });
+  }
 });
 
 /******************************
- *  POPUP QUIZ (nếu có)
+ *  POPUP QUIZ (giữ nguyên từ script.js gốc)
  ******************************/
 window.openQuiz = function(file) {
   document.getElementById("quizFrame").src = file;
