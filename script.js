@@ -1,52 +1,35 @@
 /******************************
- *  CẤU HÌNH (API mới thay cho CSV)
+ *  CẤU HÌNH (giữ nguyên từ script.js gốc)
  ******************************/
-const ACCESS_API = "https://script.google.com/macros/s/AKfycbwr_kvoRUXeqihZIjPKrn5iwsNzpk50OnoBVbrPc7ZPtampxFsJ7rdkjf-KB57-LpeV/exec";
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWOaqTY5nvD10GK9hFsnvT8sn63wuS1WEkQj4iEeiMG-N61EdGPtt6dgnG-DdZjrzyrUC3Tf4CvKE/pub?output=csv";
 
 /******************************
- *  Device ID ổn định cho mỗi trình duyệt/thiết bị
+ *  LẤY DANH SÁCH MÃ TỪ CSV (giữ nguyên)
  ******************************/
-function getDeviceId() {
-  const KEY = 'deviceId_v1';
-  let id = localStorage.getItem(KEY);
-  if (!id) {
-    // UUID v4 đơn giản
-    id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-    localStorage.setItem(KEY, id);
+async function fetchCodes() {
+  const res = await fetch(`${SHEET_CSV}&t=${Date.now()}`);
+  if (!res.ok) throw new Error("CSV error: " + res.status);
+  const text = await res.text();
+  const rows = text.split(/\r?\n/).map(r => r.split(","));
+  let codes = rows.map(r => (r[0] || "").trim()).filter(Boolean);
+  if (codes.length && codes[0].toLowerCase() === "code") {
+    codes = codes.slice(1);
   }
-  return id;
+  return codes.map(c => c.toLowerCase());
 }
 
 /******************************
- *  Gọi Web App (Apps Script) để xác thực & đăng ký thiết bị
- ******************************/
-async function verifyCodeWithServer(code) {
-  const deviceId = getDeviceId();
-  const payload = { code, deviceId };
-  // Dùng text/plain để tránh preflight CORS
-  const res = await fetch(ACCESS_API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(payload)
-  });
-  if (!res.ok) throw new Error('Network error: ' + res.status);
-  return res.json();
-}
-
-/******************************
- *  XỬ LÝ MỞ KHÓA (thay thế bản cũ dùng CSV)
+ *  XỬ LÝ MỞ KHÓA (giữ nguyên)
  ******************************/
 async function handleUnlock() {
   const input = document.getElementById("code");
   const course = document.getElementById("course");
   const btn = document.getElementById("unlockBtn");
 
-  const code = (input?.value || "").trim().toLowerCase();
+  const code = (input.value || "").trim().toLowerCase();
   if (!code) {
     alert("Vui lòng nhập mã!");
-    input?.focus();
+    input.focus();
     return;
   }
 
@@ -58,16 +41,18 @@ async function handleUnlock() {
 
   try {
     const result = await verifyCodeWithServer(code);
+    console.log("[verifyCodeWithServer]", result);
     if (result.allowed) {
       course?.classList.remove("hidden");
       window.scrollTo({ top: course?.offsetTop || 0, behavior: "smooth" });
     } else {
-      alert(result?.message || "Không thể dùng mã này.");
+      const msg = result?.message || "Không thể dùng mã này.";
+      alert(msg);
       course?.classList.add("hidden");
     }
   } catch (err) {
-    console.error(err);
-    alert("Có lỗi khi kiểm tra mã, vui lòng thử lại!");
+    console.error("[verifyCodeWithServer][error]", err);
+    alert(err?.message || "Có lỗi khi kiểm tra mã, vui lòng thử lại!");
     course?.classList.add("hidden");
   } finally {
     if (btn) {
