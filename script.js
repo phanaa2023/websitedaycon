@@ -4,39 +4,131 @@
 const ACCESS_API = "https://script.google.com/macros/s/AKfycbwah8jSr6xWS_B2gdBZ-DjQSIHQsgo9BtHHrIQtyrgzvbDPaIqSRFFvejpvqxqw-9Ii/exec";
 
 /******************************
- *  Device ID ổn định cho mỗi trình duyệt/thiết bị
+ *  Device ID ổn định cho mỗi trình duyệt/thiết bị (có fallback & auto-reset)
  ******************************/
 function getDeviceId() {
   const KEY = 'deviceId_v1';
-  let id = localStorage.getItem(KEY);
-  if (!id) {
-    // UUID v4 đơn giản
-    id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-    localStorage.setItem(KEY, id);
+  try {
+    let id = localStorage.getItem(KEY);
+    if (!id) {
+      // Ưu tiên UUID v4 bằng crypto nếu có
+      if (window.crypto && crypto.getRandomValues) {
+        id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+      } else {
+        // Fallback cho trình duyệt/webview cũ
+        id = 'd-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+      }
+      localStorage.setItem(KEY, id);
+    }
+    return id;
+  } catch (e) {
+    // Private mode chặn localStorage → vẫn tạo id tạm thời
+    return 'd-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
   }
-  return id;
+}
+
+/******************************
+ *  JSONP helper: KHÔNG CORS + chống cache + timeout
+ ******************************/
+function jsonp(url, params = {}, { timeoutMs = 15000 } = {}) {
+  return new Promise((resolve, reject) => {
+    const cb = 'jsonp_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    params.cb = cb;
+    params.t = Date.now(); // cache-buster chống cache mobile
+
+    const qs = Object.keys(params)
+      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+      .join('&');
+
+    const script = document.createElement('script');
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error('JSONP timeout'));
+    }, timeoutMs);
+
+    function cleanup() {
+      clearTimeout(timer);
+      try { delete window[cb]; } catch(_) { window[cb] = undefined; }
+      if (script && script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[cb] = (data) => { cleanup(); resolve(data); };
+    script.onerror = () => { cleanup(); reject(new Error('JSONP network error')); };
+
+    script.src = url + (url.includes('?') ? '&' : '?') + qs;
+    document.head.appendChild(script);
+  });
 }
 
 /******************************
  *  Gọi Web App (Apps Script) để xác thực & đăng ký thiết bị
+ *  Ưu tiên JSONP (không CORS). Nếu bị blocker → fallback POST.
+ *  Có retry 1 lần: khi nghi ngờ cache hoặc deviceId cũ bị kẹt.
  ******************************/
-async function verifyCodeWithServer(code) {
-  const deviceId = getDeviceId();
-  const payload = { code, deviceId };
-  // Dùng text/plain để tránh preflight CORS
-  const res = await fetch(ACCESS_API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(payload)
-  });
-  if (!res.ok) throw new Error('Network error: ' + res.status);
-  return res.json();
+async function verifyCodeWithServer(code, _retried = false) {
+  const KEY = 'deviceId_v1';
+  let deviceId = getDeviceId();
+
+  // A) JSONP (không CORS)
+  try {
+    const data = await jsonp(ACCESS_API, { code, deviceId }, { timeoutMs: 12000 });
+    return data;
+  } catch (e) {
+    console.warn('[JSONP fail]', e && e.message);
+  }
+
+  // B) Fallback: POST fetch (có thể bị CORS nếu WebApp không public hoặc bị blocker)
+  try {
+    const res = await fetch(ACCESS_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // simple request tránh preflight
+      body: JSON.stringify({ code, deviceId })
+    });
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch { throw new Error('Response is not JSON: ' + text.slice(0, 200)); }
+    if (!res.ok) throw new Error(data && data.message ? data.message : ('HTTP ' + res.status));
+    return data;
+  } catch (e2) {
+    console.error('[POST fallback fail]', e2 && e2.message);
+
+    // C) Retry 1 lần: xoá deviceId (nếu có thể) & thử lại JSONP
+    if (!_retried) {
+      try { localStorage.removeItem(KEY); } catch(_) {}
+      deviceId = getDeviceId();
+      try {
+        const data = await jsonp(ACCESS_API, { code, deviceId }, { timeoutMs: 12000 });
+        return data;
+      } catch (e3) {
+        console.warn('[JSONP retry fail]', e3 && e3.message);
+      }
+      // D) Thử POST lần 2 (cuối cùng)
+      try {
+        const res = await fetch(ACCESS_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ code, deviceId })
+        });
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); }
+        catch { throw new Error('Response is not JSON: ' + text.slice(0, 200)); }
+        if (!res.ok) throw new Error(data && data.message ? data.message : ('HTTP ' + res.status));
+        return data;
+      } catch (e4) {
+        console.error('[POST retry fail]', e4 && e4.message);
+      }
+    }
+
+    throw new Error(e2 && e2.message ? e2.message : 'Không thể kết nối máy chủ.');
+  }
 }
 
 /******************************
- *  XỬ LÝ MỞ KHÓA (thay thế bản cũ dùng CSV)
+ *  XỬ LÝ MỞ KHÓA (giữ nguyên ý tưởng)
  ******************************/
 async function handleUnlock() {
   const input = document.getElementById("code");
@@ -58,16 +150,19 @@ async function handleUnlock() {
 
   try {
     const result = await verifyCodeWithServer(code);
-    if (result.allowed) {
+    console.log("[verifyCodeWithServer]", result);
+
+    if (result && result.allowed) {
       course?.classList.remove("hidden");
       window.scrollTo({ top: course?.offsetTop || 0, behavior: "smooth" });
     } else {
-      alert(result?.message || "Không thể dùng mã này.");
+      const msg = (result && result.message) ? result.message : "Không thể dùng mã này.";
+      alert(msg);
       course?.classList.add("hidden");
     }
   } catch (err) {
-    console.error(err);
-    alert("Có lỗi khi kiểm tra mã, vui lòng thử lại!");
+    console.error("[verifyCodeWithServer][error]", err);
+    alert(err?.message || "Có lỗi khi kiểm tra mã, vui lòng thử lại!");
     course?.classList.add("hidden");
   } finally {
     if (btn) {
