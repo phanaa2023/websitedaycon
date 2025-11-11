@@ -1,68 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<script>
-/* Force open this page in real browser if inside Zalo/other in-app browsers */
-(function () {
-  var ua = navigator.userAgent || "";
-  var isZalo = /Zalo/i.test(ua);
-  var isInApp = isZalo || /FBAN|FBAV|Instagram|Line\//i.test(ua);
-  if (!isInApp) return; // Trình duyệt thật thì thôi
-
-  // Lấy URL hiện tại
-  var url = location.href;
-
-  // ANDROID: dùng intent để bật Chrome thật
-  var isAndroid = /android/i.test(ua);
-  if (isAndroid) {
-    var intent = "intent://" + url.replace(/^https?:\/\//, "") +
-      "#Intent;scheme=https;package=com.android.chrome;end;";
-    // Dùng setTimeout nhỏ để tránh chặn bởi một số webview
-    setTimeout(function () { location.href = intent; }, 50);
-    return;
-  }
-
-  // iOS: cố mở Chrome (nếu có), nếu không thì hiện banner hướng dẫn mở Safari
-  var isIOS = /iPhone|iPad|iPod/i.test(ua);
-  if (isIOS) {
-    // Thử Chrome scheme (nếu máy có Chrome)
-    var chromeUrl = url.replace(/^https:\/\//i, "googlechromes://")
-                       .replace(/^http:\/\//i, "googlechrome://");
-    var opened = false;
-    try {
-      var w = window.open(chromeUrl, "_blank");
-      opened = !!w;
-    } catch (_) {}
-
-    // Nếu không mở được → hiện hướng dẫn “Mở bằng Safari”
-    if (!opened) {
-      var tip = document.createElement("div");
-      tip.setAttribute("style",
-        "position:fixed;inset:auto 8px 8px 8px;z-index:99999;background:#fff;" +
-        "border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);" +
-        "padding:12px 14px;font:600 14px system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:#111;"
-      );
-      tip.innerHTML =
-        '🔓 Đang mở trong Zalo, iPhone chặn tự chuyển sang Safari.<br>' +
-        '• Nhấn vào <b>⋯</b> hoặc nút <b>Chia sẻ</b> ở góc → chọn <b>Mở bằng Safari</b>.<br>' +
-        '• Hoặc <a id="copyLink" href="#" style="color:#348C90;text-decoration:underline">sao chép link</a> rồi dán vào Safari.';
-      document.body.appendChild(tip);
-
-      // Nút sao chép
-      var copyBtn = tip.querySelector("#copyLink");
-      if (copyBtn) {
-        copyBtn.addEventListener("click", function (e) {
-          e.preventDefault();
-          (navigator.clipboard && navigator.clipboard.writeText)
-            ? navigator.clipboard.writeText(url).then(function(){ alert("Đã sao chép link, hãy dán vào Safari."); })
-            : alert("Hãy nhấn giữ vào thanh địa chỉ để sao chép link.");
-        });
-      }
-    }
-  }
-})();
-</script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chuyển hoá tâm thức con cái</title>
@@ -154,8 +92,9 @@
     </section>
 
     <main id="course" class="hidden">
-      <article>
-        <p>Các video có thể chạm 2 lần bên trái để lùi 10 giây, bên phải để tới 10 giây.</p>
+	
+      <article><p>
+<strong>⚠️ Lưu ý:</strong> Vui lòng mở web bằng trình duyệt (Chrome, Safari,…) để có trải nghiệm tốt nhất và có thể tải về tài liệu không bị lỗi. </p>
         <h3>Bài nghe 1</h3>
         <div style="padding:56.25% 0 0 0;position:relative;">
           <iframe 
