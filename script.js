@@ -1,7 +1,7 @@
 /******************************
  *  CẤU HÌNH (API mới thay cho CSV)
  ******************************/
-const ACCESS_API = "https://script.google.com/macros/s/AKfycbwah8jSr6xWS_B2gdBZ-DjQSIHQsgo9BtHHrIQtyrgzvbDPaIqSRFFvejpvqxqw-9Ii/exec";
+const ACCESS_API = "https://script.google.com/macros/s/AKfycbxOjHC7fYhrMdKhmmJhz9-ZfgpLi98MCrRWac1mv4XZ9na07iow0iI05PXSShmZ6TUj/exec";
 
 /******************************
  *  Device ID ổn định cho mỗi trình duyệt/thiết bị (có fallback & auto-reset)
