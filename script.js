@@ -179,14 +179,14 @@ async function handleUnlock() {
     btn.textContent = "Đang kiểm tra...";
   }
 
+  let finalResult = null; // ⚠ định nghĩa ngoài try để finally luôn có giá trị
+
   try {
     // Chạy song song cả 2 nguồn
     const [serverResult, csvResult] = await Promise.allSettled([
       verifyCodeWithServer(code),
       checkCodeFromCSV(code)
     ]);
-
-    let finalResult = null;
 
     // Ưu tiên kết quả server nếu hợp lệ
     if (serverResult.status === "fulfilled" && serverResult.value && serverResult.value.allowed) {
@@ -230,14 +230,13 @@ async function handleUnlock() {
     alert(err?.message || "Có lỗi xảy ra khi kiểm tra mã.");
     course?.classList.add("hidden");
   } finally {
-    if (btn && (!finalResult || !finalResult.allowed)) {
-      // Nếu chưa mở khóa, trả về trạng thái cũ
+    if (btn && !(finalResult && finalResult.allowed)) {
+      // Nếu chưa mở khóa thành công → reset nút
       btn.disabled = false;
       if (btn.dataset._text) btn.textContent = btn.dataset._text;
     }
   }
 }
-
 
 
 /******************************
