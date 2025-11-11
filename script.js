@@ -132,7 +132,7 @@ async function verifyCodeWithServer(code, _retried = false) {
  ******************************/
 // ---- Thay thế toàn bộ hàm checkCodeFromCSV hiện tại bằng bản dưới đây ----
 async function checkCodeFromCSV(code) {
-  const url = CSV_FALLBACK_URL + "?_t=" + Date.now();
+  const url = CSV_FALLBACK_URL + (CSV_FALLBACK_URL.includes('?') ? '&' : '?') + '_t=' + Date.now();
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Không tải được CSV fallback");
