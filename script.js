@@ -130,30 +130,80 @@ async function verifyCodeWithServer(code, _retried = false) {
 /******************************
  *  Fallback CSV: chỉ kiểm tra mã, không cần thiết bị
  ******************************/
+// ---- Thay thế toàn bộ hàm checkCodeFromCSV hiện tại bằng bản dưới đây ----
 async function checkCodeFromCSV(code) {
+  const url = CSV_FALLBACK_URL + "?_t=" + Date.now();
   try {
-    const res = await fetch(CSV_FALLBACK_URL + "?_t=" + Date.now());
+    const res = await fetch(url);
     if (!res.ok) throw new Error("Không tải được CSV fallback");
     let text = await res.text();
 
-    // Loại bỏ BOM UTF-8 nếu có
+    // Loại BOM nếu có
     if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
 
-    const lines = text.trim().split(/\r?\n/).filter(l => l.trim() !== "");
+    // Tách dòng, bỏ dòng rỗng
+    const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
     if (lines.length <= 1) return { allowed: false, source: "csv", message: "CSV trống" };
 
-    // Tự nhận separator: nếu có dấu ; thì dùng ;, ngược lại dùng ,
-    const separator = lines[0].includes(";") ? ";" : ",";
+    // Tách dòng đầu để đoán separator, nhưng theo quy tắc CSV (tôn trọng ngoặc kép)
+    function splitCSVLine(line, sep) {
+      const out = [];
+      let cur = "";
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') {
+          if (inQuotes && line[i + 1] === '"') { // escape ""
+            cur += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (ch === sep && !inQuotes) {
+          out.push(cur);
+          cur = "";
+        } else {
+          cur += ch;
+        }
+      }
+      out.push(cur);
+      return out;
+    }
 
-    const headers = lines[0].split(separator).map(h => h.trim().toLowerCase());
-    const codeIndex = headers.indexOf("code");
-    if (codeIndex === -1) throw new Error("Không tìm thấy cột 'code' trong CSV");
+    // Thử cả 2 dấu ngăn cách, chọn cái cho ra nhiều cột hơn
+    const testComma = splitCSVLine(lines[0], ',').length;
+    const testSemi  = splitCSVLine(lines[0], ';').length;
+    const sep = testSemi > testComma ? ';' : ',';
 
-    const codeLower = code.trim().toLowerCase();
+    // Headers (chuẩn hoá: lowerCase + trim + bỏ ngoặc kép)
+    const headersRaw = splitCSVLine(lines[0], sep);
+    const headers = headersRaw.map(h => h.trim().replace(/^"(.*)"$/, "$1").toLowerCase());
 
+    // Hỗ trợ nhiều biến thể tên cột
+    const headerCandidates = ["code", "mã", "ma", "mã code", "course_code"];
+    let codeIndex = -1;
+    for (const name of headerCandidates) {
+      const idx = headers.indexOf(name);
+      if (idx !== -1) { codeIndex = idx; break; }
+    }
+    if (codeIndex === -1) {
+      return { allowed: false, source: "csv", message: "Không thấy cột mã (code/mã/ma) trong CSV" };
+    }
+
+    const codeNorm = String(code || "").trim().toLowerCase();
+
+    // Duyệt từng dòng dữ liệu
     for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split(separator).map(c => c.trim().toLowerCase());
-      if (cols[codeIndex] === codeLower) {
+      const colsRaw = splitCSVLine(lines[i], sep);
+      // Bổ sung ô thiếu nếu dòng ngắn
+      while (colsRaw.length < headers.length) colsRaw.push("");
+      // Chuẩn hoá ô cần so khớp
+      const cell = (colsRaw[codeIndex] ?? "")
+        .trim()
+        .replace(/^"(.*)"$/, "$1") // bỏ "" bao quanh
+        .toLowerCase();
+
+      if (cell && cell === codeNorm) {
         return { allowed: true, source: "csv", message: "Mã hợp lệ (CSV backup)" };
       }
     }
@@ -164,6 +214,7 @@ async function checkCodeFromCSV(code) {
     return { allowed: false, source: "csv", message: "CSV lỗi hoặc không khả dụng" };
   }
 }
+
 
 
 
