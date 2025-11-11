@@ -134,28 +134,37 @@ async function checkCodeFromCSV(code) {
   try {
     const res = await fetch(CSV_FALLBACK_URL + "?_t=" + Date.now());
     if (!res.ok) throw new Error("Không tải được CSV fallback");
-    const text = await res.text();
+    let text = await res.text();
 
-    const lines = text.trim().split(/\r?\n/);
+    // Loại bỏ BOM UTF-8 nếu có
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+
+    const lines = text.trim().split(/\r?\n/).filter(l => l.trim() !== "");
     if (lines.length <= 1) return { allowed: false, source: "csv", message: "CSV trống" };
 
-    const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+    // Tự nhận separator: nếu có dấu ; thì dùng ;, ngược lại dùng ,
+    const separator = lines[0].includes(";") ? ";" : ",";
+
+    const headers = lines[0].split(separator).map(h => h.trim().toLowerCase());
     const codeIndex = headers.indexOf("code");
     if (codeIndex === -1) throw new Error("Không tìm thấy cột 'code' trong CSV");
 
-    // So khớp code
+    const codeLower = code.trim().toLowerCase();
+
     for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split(",").map(c => c.trim().toLowerCase());
-      if (cols[codeIndex] === code) {
+      const cols = lines[i].split(separator).map(c => c.trim().toLowerCase());
+      if (cols[codeIndex] === codeLower) {
         return { allowed: true, source: "csv", message: "Mã hợp lệ (CSV backup)" };
       }
     }
+
     return { allowed: false, source: "csv", message: "Không tìm thấy mã trong CSV" };
   } catch (err) {
     console.error("[checkCodeFromCSV][error]", err);
     return { allowed: false, source: "csv", message: "CSV lỗi hoặc không khả dụng" };
   }
 }
+
 
 
 /******************************
