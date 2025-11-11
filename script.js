@@ -373,27 +373,3 @@ window.closeQuiz = function() {
   document.getElementById("quizFrame").src = "";
 };
 
-/******************************
- *  ⚙️ FIX: Ép link Google Drive mở bằng trình duyệt ngoài (Zalo/Facebook webview)
- ******************************/
-document.addEventListener("click", function (e) {
-  const a = e.target.closest("a");
-  if (!a) return;
-  const href = a.getAttribute("href") || "";
-  // Phát hiện link tải từ Google Drive (cả domain drive và usercontent)
-  if (href.includes("drive.google.com") || href.includes("drive.usercontent.google.com")) {
-    e.preventDefault();
-    try {
-      // Android: dùng intent để bật Chrome thật
-      if (/android/i.test(navigator.userAgent)) {
-        window.location.href = `intent://${href.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end;`;
-      } else {
-        // iOS & các trường hợp khác: cố gắng bật trình duyệt hệ thống
-        window.open(href, "_system");
-      }
-    } catch (err) {
-      // Fallback an toàn
-      window.open(href, "_blank");
-    }
-  }
-});
