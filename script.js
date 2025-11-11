@@ -1,5 +1,5 @@
 /******************************
- *  CẤU HÌNH (API mới thay cho CSV)
+ *  CẤU HÌNH (API và dự phòng CSV)
  ******************************/
 const ACCESS_API = "https://script.google.com/macros/s/AKfycbyOOf9KAR2rfWQE0RkYX42wqLXs4mR722mJ5xHUv3nrbcLq_WT6rUTMUQeNhmugTeoE/exec";
 const CSV_FALLBACK_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWOaqTY5nvD10GK9hFsnvT8sn63wuS1WEkQj4iEeiMG-N61EdGPtt6dgnG-DdZjrzyrUC3Tf4CvKE/pub?output=csv";
@@ -372,3 +372,28 @@ window.closeQuiz = function() {
   document.getElementById("quizPopup").classList.remove("active");
   document.getElementById("quizFrame").src = "";
 };
+
+/******************************
+ *  ⚙️ FIX: Ép link Google Drive mở bằng trình duyệt ngoài (Zalo/Facebook webview)
+ ******************************/
+document.addEventListener("click", function (e) {
+  const a = e.target.closest("a");
+  if (!a) return;
+  const href = a.getAttribute("href") || "";
+  // Phát hiện link tải từ Google Drive (cả domain drive và usercontent)
+  if (href.includes("drive.google.com") || href.includes("drive.usercontent.google.com")) {
+    e.preventDefault();
+    try {
+      // Android: dùng intent để bật Chrome thật
+      if (/android/i.test(navigator.userAgent)) {
+        window.location.href = `intent://${href.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end;`;
+      } else {
+        // iOS & các trường hợp khác: cố gắng bật trình duyệt hệ thống
+        window.open(href, "_system");
+      }
+    } catch (err) {
+      // Fallback an toàn
+      window.open(href, "_blank");
+    }
+  }
+});
