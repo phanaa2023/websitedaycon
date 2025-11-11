@@ -2,6 +2,7 @@
  *  CẤU HÌNH (API mới thay cho CSV)
  ******************************/
 const ACCESS_API = "https://script.google.com/macros/s/AKfycbyOOf9KAR2rfWQE0RkYX42wqLXs4mR722mJ5xHUv3nrbcLq_WT6rUTMUQeNhmugTeoE/exec";
+const CSV_FALLBACK_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTrWOaqTY5nvD10GK9hFsnvT8sn63wuS1WEkQj4iEeiMG-N61EdGPtt6dgnG-DdZjrzyrUC3Tf4CvKE/pub?output=csv";
 
 /******************************
  *  Device ID ổn định cho mỗi trình duyệt/thiết bị (có fallback & auto-reset)
@@ -126,6 +127,36 @@ async function verifyCodeWithServer(code, _retried = false) {
     throw new Error(e2 && e2.message ? e2.message : 'Không thể kết nối máy chủ.');
   }
 }
+/******************************
+ *  Fallback CSV: chỉ kiểm tra mã, không cần thiết bị
+ ******************************/
+async function checkCodeFromCSV(code) {
+  try {
+    const res = await fetch(CSV_FALLBACK_URL + "?_t=" + Date.now());
+    if (!res.ok) throw new Error("Không tải được CSV fallback");
+    const text = await res.text();
+
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length <= 1) return { allowed: false, source: "csv", message: "CSV trống" };
+
+    const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+    const codeIndex = headers.indexOf("code");
+    if (codeIndex === -1) throw new Error("Không tìm thấy cột 'code' trong CSV");
+
+    // So khớp code
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(",").map(c => c.trim().toLowerCase());
+      if (cols[codeIndex] === code) {
+        return { allowed: true, source: "csv", message: "Mã hợp lệ (CSV backup)" };
+      }
+    }
+    return { allowed: false, source: "csv", message: "Không tìm thấy mã trong CSV" };
+  } catch (err) {
+    console.error("[checkCodeFromCSV][error]", err);
+    return { allowed: false, source: "csv", message: "CSV lỗi hoặc không khả dụng" };
+  }
+}
+
 
 /******************************
  *  XỬ LÝ MỞ KHÓA (giữ nguyên ý tưởng)
@@ -149,28 +180,65 @@ async function handleUnlock() {
   }
 
   try {
-    const result = await verifyCodeWithServer(code);
-    console.log("[verifyCodeWithServer]", result);
+    // Chạy song song cả 2 nguồn
+    const [serverResult, csvResult] = await Promise.allSettled([
+      verifyCodeWithServer(code),
+      checkCodeFromCSV(code)
+    ]);
 
-    if (result && result.allowed) {
+    let finalResult = null;
+
+    // Ưu tiên kết quả server nếu hợp lệ
+    if (serverResult.status === "fulfilled" && serverResult.value && serverResult.value.allowed) {
+      finalResult = { ...serverResult.value, source: "server" };
+    }
+    // Nếu server lỗi, nhưng CSV có mã thì dùng CSV
+    else if (csvResult.status === "fulfilled" && csvResult.value && csvResult.value.allowed) {
+      finalResult = { ...csvResult.value, source: "csv" };
+    }
+    // Cả hai đều fail
+    else {
+      const msg = (serverResult.status === "fulfilled" && serverResult.value?.message)
+        || (csvResult.status === "fulfilled" && csvResult.value?.message)
+        || "Không thể xác thực mã này.";
+      throw new Error(msg);
+    }
+
+    console.log("[Final verification]", finalResult);
+
+    if (finalResult.allowed) {
       course?.classList.remove("hidden");
       window.scrollTo({ top: course?.offsetTop || 0, behavior: "smooth" });
+
+      // Thay alert bằng console.log
+      console.log(finalResult.source === "csv"
+        ? "✅ Mã hợp lệ (dùng nguồn dự phòng CSV)."
+        : "✅ Mã hợp lệ (máy chủ chính)."
+      );
+
+      // Đổi nút thành "Đã mở khóa!" và khóa luôn
+      if (btn) {
+        btn.textContent = "Đã mở khóa!";
+        btn.disabled = true;
+      }
     } else {
-      const msg = (result && result.message) ? result.message : "Không thể dùng mã này.";
-      alert(msg);
+      alert(finalResult.message || "Mã không hợp lệ.");
       course?.classList.add("hidden");
     }
   } catch (err) {
-    console.error("[verifyCodeWithServer][error]", err);
-    alert(err?.message || "Có lỗi khi kiểm tra mã, vui lòng thử lại!");
+    console.error("[handleUnlock][error]", err);
+    alert(err?.message || "Có lỗi xảy ra khi kiểm tra mã.");
     course?.classList.add("hidden");
   } finally {
-    if (btn) {
+    if (btn && (!finalResult || !finalResult.allowed)) {
+      // Nếu chưa mở khóa, trả về trạng thái cũ
       btn.disabled = false;
       if (btn.dataset._text) btn.textContent = btn.dataset._text;
     }
   }
 }
+
+
 
 /******************************
  *  SỰ KIỆN UI (giữ nguyên)
