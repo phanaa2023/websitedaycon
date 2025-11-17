@@ -402,6 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.querySelectorAll("iframe[src*='vimeo.com']").forEach((iframe) => {
+	  if (index === 0) return;  // ❌ Bỏ qua video đầu tiên – không gắn hiệu ứng
       const player = new Vimeo.Player(iframe);
       const wrapper = document.createElement("div");
       wrapper.classList.add("effect-layer");
