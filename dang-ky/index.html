@@ -4,19 +4,168 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chuyển hoá tâm thức con cái</title>
+
   <!-- Google Fonts: Quicksand -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- CSS chính -->
   <link rel="stylesheet" href="../style.css">
-  <!-- Standard favicon -->
+
+  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="96x96" href="../favicon/favicon-96x96.png">
   <link rel="icon" type="image/svg+xml" href="../favicon/favicon.svg">
   <link rel="shortcut icon" href="../favicon/favicon.ico">
-  <!-- iOS / Apple Touch Icon -->
   <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
-  <!-- Android / Web App Manifest -->
   <link rel="manifest" href="../favicon/site.webmanifest">
   <meta name="theme-color" content="#ffffff">
+
+  <!-- FORM & POPUP STYLE -->
+  <style>
+    /* ===== FORM ĐĂNG KÝ: MOBILE FIRST, TÔNG MÀU #348C90 ===== */
+
+    .form-box {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 16px 20px;
+      margin: 24px 0 18px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .form-box h3 {
+      text-align: center;
+      color: #348C90;
+      font-weight: 800;
+      font-size: 20px;
+      margin: 0 0 14px;
+    }
+
+    .form-box label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .form-box input[type="text"],
+    .form-box input[type="tel"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid #d0d7de;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      background: #f9fafb;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    .form-box input::placeholder {
+      color: #9da5b1;
+      font-size: 14px;
+    }
+
+    .form-box input:focus {
+      border-color: #348C90;
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba(52, 140, 144, 0.15);
+    }
+
+    /* Nút submit */
+    .form-submit-btn,
+    .form-box button[type="submit"] {
+      width: auto;
+      padding: 10px 22px;
+      margin: 18px auto 0;
+      display: block;
+      border-radius: 999px;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #348C90, #2c6f72);
+      color: #fff;
+      box-shadow: 0 6px 12px rgba(52, 140, 144, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+
+    .form-submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(52, 140, 144, 0.45);
+    }
+
+    .form-submit-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(52, 140, 144, 0.5);
+    }
+
+    .form-submit-btn:disabled {
+      opacity: 0.7;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    @media (min-width: 480px) {
+      .form-box {
+        padding: 20px 18px 22px;
+        border-radius: 18px;
+      }
+      .form-box h3 {
+        font-size: 22px;
+      }
+    }
+
+    /* ===== POPUP THÔNG BÁO ĐĂNG KÝ ===== */
+
+    .popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .popup-content {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 16px 16px;
+      width: 88%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+      box-sizing: border-box;
+    }
+
+    .popup-content p {
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #333;
+      margin: 0 0 12px;
+    }
+
+    .popup-content button {
+      margin-top: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: #348C90;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .popup-content button:hover {
+      filter: brightness(1.05);
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -24,20 +173,21 @@
       <h1>KHÓA HỌC</h1>
       <h2>Chuyển hoá tâm thức con cái thời 4.0<br>để con không sa ngã</h2>
     </header>
-	
-<article style="margin-top: 0px; margin-bottom: 0px;">
-  <div class="video-hero">
-    <iframe 
-      src="https://player.vimeo.com/video/1137542916?badge=0&autopause=0&player_id=0&app_id=58479" 
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-      style="position:absolute; top:0; left:0; width:100%; height:100%;">
-    </iframe>
-  </div>
-</article>
 
+    <!-- VIDEO -->
+    <article style="margin-top: 0; margin-bottom: 0;">
+      <div class="video-hero">
+        <iframe 
+          src="https://player.vimeo.com/video/1137542916?badge=0&autopause=0&player_id=0&app_id=58479" 
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          style="position:absolute; top:0; left:0; width:100%; height:100%;">
+        </iframe>
+      </div>
+    </article>
 
     <section class="intro">
+      <!-- LỢI ÍCH KHÓA HỌC -->
       <section class="benefits">
         <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
           Dưới đây là những giá trị thiết thực mà anh chị sẽ nhận được trong khóa học này:
@@ -87,133 +237,44 @@
           Chúc anh chị có một hành trình tràn đầy niềm vui và bình an bên con!
         </p>
       </section>
-<!-- FORM ĐĂNG KÝ -->
-<div class="form-box">
-  <h3>Đăng ký khóa học</h3>
-  <form id="registerForm">
-    <label>Họ và tên</label>
-    <input type="text" name="name" required>
 
-    <label>Số điện thoại</label>
-    <input type="tel" name="phone" required>
+      <!-- FORM ĐĂNG KÝ -->
+      <div class="form-box">
+        <h3>Đăng ký khóa học!</h3>
+        <form id="registerForm">
+          <label>Họ và tên</label>
+          <input type="text" name="name" placeholder="Nhập họ tên đầy đủ" required>
 
-    <label>Mã thanh toán (nếu đã chuyển khoản)</label>
-    <input type="text" name="paymentCode">
+          <label>Số điện thoại</label>
+          <input type="tel" name="phone" placeholder="Ví dụ: 09xx xxx xxx" required>
 
-    <button type="submit">Đăng ký</button>
-  </form>
-</div>
+          <label>Mã thanh toán</label>
+          <input type="text" name="paymentCode" placeholder="Nhập mã giao dịch" required>
 
-<!-- POPUP -->
-<div id="popup" class="popup">
-  <div class="popup-content">
-    <p>🎉 Đăng ký thành công!<br>
-    Vui lòng đợi chúng tôi liên hệ hoặc nhắn tin Fanpage.</p>
-    <a href="https://m.me/khoahocdaycon" target="_blank" class="fb-btn">💬 Nhắn fanpage</a>
-    <button onclick="closePopup()">Đóng</button>
-  </div>
-</div>
+          <button type="submit" class="form-submit-btn">Đăng ký</button>
+        </form>
+      </div>
 
-<style>
-  .form-box {
-    background:#f8f8f8;
-    padding:20px;
-    border-radius:10px;
-    margin:25px 0;
-  }
-  .form-box input, .form-box button {
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    font-size:16px;
-  }
-  .form-box button {
-    background:#348C90;
-    color:white;
-    border:none;
-    cursor:pointer;
-  }
-  .popup {
-    display:none;
-    position:fixed;
-    top:0; left:0; 
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.6);
-    justify-content:center;
-    align-items:center;
-  }
-  .popup-content {
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    text-align:center;
-    width:80%;
-    max-width:350px;
-  }
-  .fb-btn {
-    display:block;
-    margin:10px 0;
-    padding:10px;
-    background:#0084ff;
-    color:white;
-    border-radius:8px;
-    text-decoration:none;
-  }
-</style>
+      <!-- POPUP -->
+      <div id="popup" class="popup">
+        <div class="popup-content">
+          <p>
+            🎉 Đăng ký thành công!<br>
+            Vui lòng đợi chúng tôi liên hệ lại hoặc nhắn tin Fanpage.
+          </p>
+          <button type="button" onclick="closePopup()">Đóng</button>
+        </div>
+      </div>
 
-<script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbzLcScsVMUaO6VV9o7LQP5Q8YOT7vjczlUCW_QLXaXRdv4AHNbBJ0oitPHem6eg-OUU/exec";
-const form = document.getElementById("registerForm");
-const submitBtn = form.querySelector('button[type="submit"]');
-
-form.addEventListener("submit", function(e){
-  e.preventDefault();
-
-  const formData = new FormData(form);
-
-  // 👉 Hiển thị trạng thái đang gửi
-  submitBtn.disabled = true;
-  submitBtn.innerText = "Đang gửi...";
-
-  fetch(scriptURL, {
-    method: "POST",
-    mode: "no-cors",
-    body: formData
-  })
-  .then(() => {
-    // Với no-cors, coi như gửi ok
-    document.getElementById("popup").style.display = "flex";
-    form.reset();
-  })
-  .catch(err => {
-    console.error("Fetch error:", err);
-    alert("Lỗi đăng ký, vui lòng thử lại!");
-  })
-  .finally(() => {
-    // Dù thành công hay lỗi cũng trả nút về trạng thái cũ
-    submitBtn.disabled = false;
-    submitBtn.innerText = "Đăng ký";
-  });
-});
-
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}
-</script>
-
-	  
-
+      <!-- NÚT FANPAGE -->
       <div style="text-align:center; margin-top:20px;">
         <a href="https://m.me/khoahocdaycon" target="_blank" class="btn-fanpage">
           💬 Liên hệ Fanpage nếu cần hỗ trợ
         </a>
       </div>
-	</section>
+    </section>
 
-
-
+    <!-- FOOTER -->
     <footer>
       <div class="featured-quote">
         <h2 style="color:#348C90; margin-bottom:15px;">Lời khuyên từ chuyên gia</h2>
@@ -223,15 +284,54 @@ function closePopup() {
         </blockquote>
       </div>
 
-      <h3 style="color:#348C90; margin-top:30px; margin-bottom:10px; text-align: left;">
+      <h3 style="color:#348C90; margin-top:30px; margin-bottom:10px; text-align:left;">
         Phản hồi của phụ huynh:
       </h3>
       <div id="chatReviewContainer"></div>
     </footer>
   </div>
 
+  <!-- SCRIPT -->
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script src="../script.js?v=20251111"></script>
-  
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzLcScsVMUaO6VV9o7LQP5Q8YOT7vjczlUCW_QLXaXRdv4AHNbBJ0oitPHem6eg-OUU/exec";
+    const form = document.getElementById("registerForm");
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      // Trạng thái đang gửi
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Đang gửi...";
+
+      fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      })
+      .then(() => {
+        // Với no-cors, coi như gửi OK
+        document.getElementById("popup").style.display = "flex";
+        form.reset();
+      })
+      .catch(err => {
+        console.error("Fetch error:", err);
+        alert("Lỗi đăng ký, vui lòng thử lại!");
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Đăng ký";
+      });
+    });
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+  </script>
 </body>
 </html>
