@@ -164,34 +164,35 @@
 </style>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbx3SL5_aGThQPg_eSM1CY8VGcnwI8urFMHRAMO1L0khD9uwqlApVGxhvBB11d-jpehR/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzLcScsVMUaO6VV9o7LQP5Q8YOT7vjczlUCW_QLXaXRdv4AHNbBJ0oitPHem6eg-OUU/exec";
+const form = document.getElementById("registerForm");
 
-document.getElementById("registerForm").addEventListener("submit", function(e){
+form.addEventListener("submit", function(e){
   e.preventDefault();
 
-  const formData = {
-    name: this.name.value,
-    phone: this.phone.value,
-    paymentCode: this.paymentCode.value
-  };
+  const formData = new FormData(form); // tự lấy name, phone, paymentCode
 
   fetch(scriptURL, {
     method: "POST",
-    body: JSON.stringify(formData),
-    headers: { "Content-Type": "application/json" }
+    mode: "no-cors",   // quan trọng để tránh CORS
+    body: formData     // KHÔNG set headers gì thêm
   })
-  .then(res => res.json())
   .then(() => {
+    // với no-cors, mình không biết chắc response, nên coi như gửi ok
     document.getElementById("popup").style.display = "flex";
-    this.reset();
+    form.reset();
   })
-  .catch(err => alert("Lỗi đăng ký, vui lòng thử lại!"));
+  .catch(err => {
+    console.error("Fetch error:", err);
+    alert("Lỗi đăng ký, vui lòng thử lại!");
+  });
 });
 
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
 </script>
+
 	  
 
       <div style="text-align:center; margin-top:20px;">
