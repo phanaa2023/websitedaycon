@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chuyển hoá tâm thức con cái</title>
+  <!-- Google Fonts: Quicksand -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <!-- Standard favicon -->
+  <link rel="icon" type="image/png" sizes="96x96" href="../favicon/favicon-96x96.png">
+  <link rel="icon" type="image/svg+xml" href="../favicon/favicon.svg">
+  <link rel="shortcut icon" href="../favicon/favicon.ico">
+  <!-- iOS / Apple Touch Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <!-- Android / Web App Manifest -->
+  <link rel="manifest" href="../favicon/site.webmanifest">
+  <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p class="author">NGUYÊN PHỤNG</p>
+      <h1>KHÓA HỌC</h1>
+      <h2>Chuyển hoá tâm thức con cái thời 4.0<br>để con không sa ngã</h2>
+    </header>
+	
+<article style="margin-top: 0px; margin-bottom: 0px;">
+  <div class="video-hero">
+    <iframe 
+      src="https://player.vimeo.com/video/1137542916?badge=0&autopause=0&player_id=0&app_id=58479" 
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+      style="position:absolute; top:0; left:0; width:100%; height:100%;">
+    </iframe>
+  </div>
+</article>
+
+
+    <section class="intro">
+      <section class="benefits">
+        <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
+          Dưới đây là những giá trị thiết thực mà anh chị sẽ nhận được trong khóa học này:
+        </p>
+
+        <div class="benefit-list">
+          <div class="benefit-item">
+            <span class="icon">📱</span>
+            <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
+              <strong style="color:#348C90;">Kéo con ra khỏi điện thoại</strong> – giúp con quay về đời sống thật, biết yêu thương và kết nối nhiều hơn.
+            </p>
+          </div>
+          <div class="benefit-item">
+            <span class="icon">💡</span>
+            <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
+              <strong style="color:#348C90;">Đánh thức tinh thần học hỏi</strong> – khơi dậy niềm hứng thú và động lực tự học từ bên trong con.
+            </p>
+          </div>
+          <div class="benefit-item">
+            <span class="icon">🔥</span>
+            <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
+              <strong style="color:#348C90;">Xây dựng ý chí & đạo đức</strong> – giúp con hình thành bản lĩnh, trách nhiệm và lòng nhân ái vững chắc.
+            </p>
+          </div>
+          <div class="benefit-item">
+            <span class="icon">💻</span>
+            <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
+              <strong style="color:#348C90;">Biến công nghệ thành công cụ</strong> – hướng dẫn con dùng công nghệ để phát triển tài năng, thay vì sa đà vô bổ.
+            </p>
+          </div>
+          <div class="benefit-item">
+            <span class="icon">🌸</span>
+            <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
+              <strong style="color:#348C90;">Chuyển hóa từ bên trong</strong> – giúp con tự nhận thức, bình an và biết sống hướng thiện mỗi ngày.
+            </p>
+          </div>
+          <div class="benefit-item">
+            <span class="icon">📘</span>
+            <p style="font-size:17px; line-height:1.8; color:#333; text-align:justify;">
+              <strong style="color:#348C90;">Bộ tài liệu tặng kèm</strong> – là kim chỉ nam giúp cha mẹ dẫn lối con đến với những điều tốt đẹp nhất trong hành trình trưởng thành.
+            </p>
+          </div>
+        </div>
+
+        <p style="font-size:17px; line-height:1.8; color:#333; text-align:center; margin-top:25px;">
+          ✨ <em style="color:#348C90;">Tương lai của con chính là hậu vận của cha mẹ!</em><br><br>
+          Chúc anh chị có một hành trình tràn đầy niềm vui và bình an bên con!
+        </p>
+      </section>
+<!-- FORM ĐĂNG KÝ -->
+<div class="form-box">
+  <h3>Đăng ký khóa học</h3>
+  <form id="registerForm">
+    <label>Họ và tên</label>
+    <input type="text" name="name" required>
+
+    <label>Số điện thoại</label>
+    <input type="tel" name="phone" required>
+
+    <label>Mã thanh toán (nếu đã chuyển khoản)</label>
+    <input type="text" name="paymentCode">
+
+    <button type="submit">Đăng ký</button>
+  </form>
+</div>
+
+<!-- POPUP -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <p>🎉 Đăng ký thành công!<br>
+    Vui lòng đợi chúng tôi liên hệ hoặc nhắn tin Fanpage.</p>
+    <a href="https://m.me/khoahocdaycon" target="_blank" class="fb-btn">💬 Nhắn fanpage</a>
+    <button onclick="closePopup()">Đóng</button>
+  </div>
+</div>
+
+<style>
+  .form-box {
+    background:#f8f8f8;
+    padding:20px;
+    border-radius:10px;
+    margin:25px 0;
+  }
+  .form-box input, .form-box button {
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:16px;
+  }
+  .form-box button {
+    background:#348C90;
+    color:white;
+    border:none;
+    cursor:pointer;
+  }
+  .popup {
+    display:none;
+    position:fixed;
+    top:0; left:0; 
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.6);
+    justify-content:center;
+    align-items:center;
+  }
+  .popup-content {
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+    width:80%;
+    max-width:350px;
+  }
+  .fb-btn {
+    display:block;
+    margin:10px 0;
+    padding:10px;
+    background:#0084ff;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+  }
+</style>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbybOQHnLVqTQ5preWkC1CP6gyriqoxDGts5Kgh2MuVx-kIWChTNO9PtuxYb59I_9MHh/exec";
+
+document.getElementById("registerForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const formData = {
+    name: this.name.value,
+    phone: this.phone.value,
+    paymentCode: this.paymentCode.value
+  };
+
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(res => res.json())
+  .then(() => {
+    document.getElementById("popup").style.display = "flex";
+    this.reset();
+  })
+  .catch(err => alert("Lỗi đăng ký, vui lòng thử lại!"));
+});
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+</script>
+	  
+
+      <div style="text-align:center; margin-top:20px;">
+        <a href="https://m.me/khoahocdaycon" target="_blank" class="btn-fanpage">
+          💬 Liên hệ Fanpage nếu cần hỗ trợ
+        </a>
+      </div>
+	</section>
+
+
+
+    <footer>
+      <div class="featured-quote">
+        <h2 style="color:#348C90; margin-bottom:15px;">Lời khuyên từ chuyên gia</h2>
+        <blockquote>
+          <p>“Mọi phụ huynh đều nên học và áp dụng khóa học này, đây là những kiến thức giúp con phát triển toàn diện, vì nhà trường không thể thay thế sự quan tâm và dẫn dắt của cha mẹ.”</p>
+          <footer>— Thầy Tuấn, Chuyên gia giáo dục</footer>
+        </blockquote>
+      </div>
+
+      <h3 style="color:#348C90; margin-top:30px; margin-bottom:10px; text-align: left;">
+        Phản hồi của phụ huynh:
+      </h3>
+      <div id="chatReviewContainer"></div>
+    </footer>
+  </div>
+
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script src="../script.js?v=20251111"></script>
+  
+</body>
+</html>
