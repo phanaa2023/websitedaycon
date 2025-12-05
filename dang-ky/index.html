@@ -166,25 +166,35 @@
 <script>
 const scriptURL = "https://script.google.com/macros/s/AKfycbzLcScsVMUaO6VV9o7LQP5Q8YOT7vjczlUCW_QLXaXRdv4AHNbBJ0oitPHem6eg-OUU/exec";
 const form = document.getElementById("registerForm");
+const submitBtn = form.querySelector('button[type="submit"]');
 
 form.addEventListener("submit", function(e){
   e.preventDefault();
 
-  const formData = new FormData(form); // tự lấy name, phone, paymentCode
+  const formData = new FormData(form);
+
+  // 👉 Hiển thị trạng thái đang gửi
+  submitBtn.disabled = true;
+  submitBtn.innerText = "Đang gửi...";
 
   fetch(scriptURL, {
     method: "POST",
-    mode: "no-cors",   // quan trọng để tránh CORS
-    body: formData     // KHÔNG set headers gì thêm
+    mode: "no-cors",
+    body: formData
   })
   .then(() => {
-    // với no-cors, mình không biết chắc response, nên coi như gửi ok
+    // Với no-cors, coi như gửi ok
     document.getElementById("popup").style.display = "flex";
     form.reset();
   })
   .catch(err => {
     console.error("Fetch error:", err);
     alert("Lỗi đăng ký, vui lòng thử lại!");
+  })
+  .finally(() => {
+    // Dù thành công hay lỗi cũng trả nút về trạng thái cũ
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Đăng ký";
   });
 });
 
