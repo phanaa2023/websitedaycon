@@ -168,11 +168,16 @@
 
 <body>
   <div class="container">
-    <header>
-      <p class="author">NGUYÊN PHỤNG</p>
-      <h1>KHÓA HỌC</h1>
-      <h2>Chuyển hoá tâm thức con cái thời 4.0<br>để con không sa ngã</h2>
-    </header>
+<header>
+  <a href="../index.html" class="header-link">
+    <p class="author">NGUYÊN PHỤNG</p>
+    <h1>KHÓA HỌC</h1>
+    <h2>
+      Chuyển hoá tâm thức con cái thời 4.0<br>
+      để con không sa ngã
+    </h2>
+  </a>
+</header>
 
     <!-- VIDEO -->
     <article style="margin-top: 0; margin-bottom: 0;">
@@ -248,9 +253,6 @@
           <label>Số điện thoại</label>
           <input type="tel" name="phone" placeholder="Ví dụ: 09xx xxx xxx" required>
 
-          <label>Mã thanh toán</label>
-          <input type="text" name="paymentCode" placeholder="Nhập mã giao dịch" required>
-
           <button type="submit" class="form-submit-btn">Đăng ký</button>
         </form>
       </div>
@@ -265,6 +267,42 @@
           <button type="button" onclick="closePopup()">Đóng</button>
         </div>
       </div>
+
+<!-- BOX THANH TOÁN -->
+<div class="payment-box">
+  <h4>📌 Hướng dẫn thanh toán</h4>
+
+  <p><strong>Quý Phụ huynh vui lòng thanh toán theo thông tin sau:</strong></p>
+
+  <div class="bank-info">
+    <p><strong>Ngân hàng:</strong> Vietcombank</p>
+
+    <div class="account-row">
+      <p><strong>Số tài khoản:</strong> 
+        <span id="accountNumber">1023635555</span>
+      </p>
+      <button class="copy-btn" onclick="copyAccount()">Copy</button>
+    </div>
+
+    <div id="copyNote" class="copy-note">✓ Đã copy số tài khoản</div>
+
+    <p><strong>Chủ tài khoản:</strong> Nguyen Phung Khoa</p>
+    <p><strong>Nội dung chuyển khoản:</strong> Ghi SĐT vừa đăng ký</p>
+  </div>
+
+  <p>
+    🔐 <strong>Mã khóa học chính là SĐT quý PH vừa đăng ký.</strong><br>
+    Sau khi thanh toán xong, chúng tôi sẽ kiểm tra lại.<br>
+    Trong khoảng <strong>30 phút – 1 tiếng</strong> sẽ kích hoạt mã khóa học.<br>
+    Quý Phụ huynh vui lòng chờ đợi. Xin cảm ơn!
+  </p>
+</div>
+
+<div style="text-align:center;">
+  <a href="../index.html" class="enter-course-btn">
+    👉 Tôi đã thanh toán – Nhập mã khóa học
+  </a>
+</div>
 
       <!-- NÚT FANPAGE -->
       <div style="text-align:center; margin-top:20px;">
