@@ -425,3 +425,15 @@ window.closeQuiz = function() {
   document.getElementById("quizFrame").src = "";
 };
 
+function copyAccount() {
+  const text = document.getElementById("accountNumber").innerText;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const note = document.getElementById("copyNote");
+    note.style.display = "block";
+
+    setTimeout(() => {
+      note.style.display = "none";
+    }, 2000);
+  });
+}
