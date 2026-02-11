@@ -633,16 +633,14 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
 .ebook-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  justify-items: center;
+  gap: 12px;
   margin-top: 20px;
 }
 
 .ebook-grid img {
   width: 100%;
-  max-width: 190px;
-  border-radius: 0px;
   height: auto;
+  border-radius: 0;
   box-shadow: 
     0 8px 20px rgba(0,0,0,0.15),
     0 18px 35px rgba(0,0,0,0.1);
@@ -651,5 +649,6 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
 /* Cuốn thứ 3 nằm giữa */
 .ebook-bottom {
   grid-column: 1 / span 2;
-  max-width: 210px;
+  width: 60% !important;
+  justify-self: center;
 }
