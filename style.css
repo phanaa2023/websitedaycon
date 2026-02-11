@@ -588,3 +588,57 @@ footer { margin-top: 18px; font-size: 13px; color: #888; text-align: center; pad
 .header-link:hover {
   opacity: 0.85;
 }
+
+.offer-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 16px;
+  margin: 30px 0;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+}
+
+.offer-box h3 {
+  color: #348C90;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.old-price {
+  color: #888;
+  text-decoration: line-through;
+  margin-bottom: 5px;
+}
+
+.old-price span {
+  font-size: 16px;
+}
+
+.new-price {
+  margin: 8px 0;
+}
+
+.new-price strong {
+  color: #e53935;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.bonus-text {
+  font-size: 15px;
+  margin: 10px 0 15px;
+  color: #444;
+}
+
+.ebook-image {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 18px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  
+  /* Đổ bóng nhiều lớp tạo chiều sâu */
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.08),
+    0 20px 40px rgba(0, 0, 0, 0.06);
+}
+
