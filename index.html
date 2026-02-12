@@ -4,168 +4,210 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chuyển hoá tâm thức con cái</title>
-
   <!-- Google Fonts: Quicksand -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;900&display=swap" rel="stylesheet">
-
-  <!-- CSS chính -->
-  <link rel="stylesheet" href="../style.css">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="96x96" href="../favicon/favicon-96x96.png">
-  <link rel="icon" type="image/svg+xml" href="../favicon/favicon.svg">
-  <link rel="shortcut icon" href="../favicon/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
-  <link rel="manifest" href="../favicon/site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <!-- Standard favicon -->
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <!-- iOS / Apple Touch Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <!-- Android / Web App Manifest -->
+  <link rel="manifest" href="favicon/site.webmanifest">
   <meta name="theme-color" content="#ffffff">
-
-  <!-- FORM & POPUP STYLE -->
-  <style>
-    /* ===== FORM ĐĂNG KÝ: MOBILE FIRST, TÔNG MÀU #348C90 ===== */
-
-    .form-box {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 18px 16px 20px;
-      margin: 24px 0 18px;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-      border: 1px solid rgba(0, 0, 0, 0.03);
-    }
-
-    .form-box h3 {
-      text-align: center;
-      color: #348C90;
-      font-weight: 800;
-      font-size: 20px;
-      margin: 0 0 14px;
-    }
-
-    .form-box label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 4px;
-    }
-
-    .form-box input[type="text"],
-    .form-box input[type="tel"] {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid #d0d7de;
-      font-size: 15px;
-      font-family: inherit;
-      outline: none;
-      background: #f9fafb;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-    }
-
-    .form-box input::placeholder {
-      color: #9da5b1;
-      font-size: 14px;
-    }
-
-    .form-box input:focus {
-      border-color: #348C90;
-      background: #ffffff;
-      box-shadow: 0 0 0 2px rgba(52, 140, 144, 0.15);
-    }
-
-    /* Nút submit */
-    .form-submit-btn,
-    .form-box button[type="submit"] {
-      width: auto;
-      padding: 10px 22px;
-      margin: 18px auto 0;
-      display: block;
-      border-radius: 999px;
-      border: none;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, #348C90, #2c6f72);
-      color: #fff;
-      box-shadow: 0 6px 12px rgba(52, 140, 144, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-    }
-
-    .form-submit-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 16px rgba(52, 140, 144, 0.45);
-    }
-
-    .form-submit-btn:active {
-      transform: translateY(1px);
-      box-shadow: 0 3px 8px rgba(52, 140, 144, 0.5);
-    }
-
-    .form-submit-btn:disabled {
-      opacity: 0.7;
-      cursor: default;
-      box-shadow: none;
-    }
-
-    @media (min-width: 480px) {
-      .form-box {
-        padding: 20px 18px 22px;
-        border-radius: 18px;
-      }
-      .form-box h3 {
-        font-size: 22px;
-      }
-    }
-
-    /* ===== POPUP THÔNG BÁO ĐĂNG KÝ ===== */
-
-    .popup {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .popup-content {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 18px 16px 16px;
-      width: 88%;
-      max-width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
-      box-sizing: border-box;
-    }
-
-    .popup-content p {
-      text-align: center;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #333;
-      margin: 0 0 12px;
-    }
-
-    .popup-content button {
-      margin-top: 8px;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: #348C90;
-      color: #fff;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .popup-content button:hover {
-      filter: brightness(1.05);
-    }
-  </style>
 </head>
 <body>
-  
+  <div class="container">
+<header>
+  <a href="../index.html" class="header-link">
+    <p class="author">NGUYÊN PHỤNG</p>
+    <h1>KHÓA HỌC</h1>
+    <h2>
+      Chuyển hoá tâm thức con cái thời 4.0<br>
+      để con không sa ngã
+    </h2>
+  </a>
+</header>
+	
+    <section class="intro">
+
+        <p style="font-size:17px; line-height:1.8; color:#333; text-align:center; margin-top:25px;">
+          ✨Chúc anh chị có một hành trình tràn đầy niềm vui và bình an bên con!
+        </p>
+      </section>
+
+	  <p style="font-size:14px; line-height:1.8; color:#333; text-align:center; margin-top:25px;">
+<strong>⚠️ Lưu ý:</strong> Hạn chế nhập mã khóa học khi đang mở website bằng Zalo, Facebook mà hãy mở trình duyệt (Chrome, Safari,…) để có trải nghiệm tốt nhất và có thể tải về tài liệu không bị lỗi. </p>
+    </section>
+
+    <section class="unlock">
+      <label for="code">Nhập mã khóa học!</label>
+      <div class="code-row">
+        <input type="text" id="code" placeholder="Mỗi mã dùng tối đa 3 thiết bị...">
+        <button id="unlockBtn">Mở khóa!</button>
+      </div>
+    </section>
+	
+<div class="register-helper">
+  Chưa có mã?
+  <a href="dangky/index.html">Đăng ký khóa học tại đây</a>
+</div>
+
+    <main id="course" class="hidden">
+	
+      <article>
+        <h3>Bài nghe 1</h3>
+        <div style="padding:56.25% 0 0 0;position:relative;">
+          <iframe 
+            src="https://player.vimeo.com/video/1120828993?badge=0&autopause=0&player_id=0&app_id=58479" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+            title="video1">
+          </iframe>
+        </div>
+
+        <div style="text-align:center; margin-top:20px;">
+          <div style="font-size:24px; color:#FFC107; margin-bottom:8px;">
+            ⭐ ⭐ ⭐
+          </div>
+          <h3 style="color:#C2185B; margin:0;">
+            ĐÁNH GIÁ TÂM THỨC CON CÁI THỜI 4.0
+          </h3>
+        </div>
+
+        <div class="quiz-buttons"> 
+          <button onclick="openQuiz('quiz1.html')">📝 Độ tuổi Mầm non (0–6 tuổi)</button>
+          <button onclick="openQuiz('quiz2.html')">📝 Độ tuổi Tiểu học (6–12 tuổi)</button>
+          <button onclick="openQuiz('quiz3.html')">📝 Tuổi Teen (13–18 tuổi)</button>
+          <button onclick="openQuiz('quiz4.html')">📝 Chấm điểm cha mẹ</button>
+        </div>
+
+        <!-- Popup quiz -->
+        <div class="quiz-popup" id="quizPopup">
+          <div class="popup-content">
+            <button class="close-btn" onclick="window.closeQuiz()">×</button>
+            <iframe id="quizFrame" src="" frameborder="0"></iframe>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <h3>Bài nghe 2</h3>
+        <div style="padding:56.25% 0 0 0;position:relative;">
+          <iframe 
+            src="https://player.vimeo.com/video/1120829689?badge=0&autopause=0&player_id=0&app_id=58479" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+            title="video2">
+          </iframe>
+        </div>
+      </article>
+
+      <article>
+        <h3>Bài nghe 3</h3>
+        <div style="padding:56.25% 0 0 0;position:relative;">
+          <iframe 
+            src="https://player.vimeo.com/video/1120829719?badge=0&autopause=0&player_id=0&app_id=58479" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+            title="video3">
+          </iframe>
+        </div>
+      </article>
+
+      <article>
+        <h3>Bài nghe 4</h3>
+        <div style="padding:56.25% 0 0 0;position:relative;">
+          <iframe 
+            src="https://player.vimeo.com/video/1120829743?badge=0&autopause=0&player_id=0&app_id=58479" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+            title="video4">
+          </iframe>
+        </div>
+      </article>
+
+      <article>
+        <h3>Bài nghe 5</h3>
+        <div style="padding:56.25% 0 0 0;position:relative;">
+          <iframe 
+            src="https://player.vimeo.com/video/1120829773?badge=0&autopause=0&player_id=0&app_id=58479" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+            title="video5">
+          </iframe>
+        </div>
+      </article>
+
+      <article>
+        <h3>Bài nghe 6</h3>
+        <div style="padding:56.25% 0 0 0;position:relative;">
+          <iframe 
+            src="https://player.vimeo.com/video/1120829815?badge=0&autopause=0&player_id=0&app_id=58479" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+            title="video6">
+          </iframe>
+        </div>
+      </article>
+
+      <!-- Tài liệu tặng -->
+      <section class="resources">
+        <h2>🎁 Tài liệu bạn nhận được</h2>
+        <p>Sau khi tải về, bạn ra màn hình chính mở tệp/file tìm thư mục tải về/download sẽ thấy ebook để đọc nhé!</p>
+        <div class="resource-list">
+          <div class="resource-card">
+            <h3>Tài liệu 1: Áp dụng đạo Phật vào dạy con</h3>
+            <a href="https://drive.usercontent.google.com/uc?id=1lRCigsS8wPe1-VNLVAD9s-0wdCWA6sqx&export=download" class="btn-download" target="_blank">📥 Tải về</a>
+          </div>
+          <div class="resource-card">
+            <h3>Tài liệu 2: Những câu chuyện Phật pháp nhiệm màu</h3>
+            <a href="https://drive.usercontent.google.com/uc?id=1_4Y9q2C1fjl9JDB19eJUT9_8rKVQ-uQn&export=download" class="btn-download" target="_blank">📥 Tải về</a>
+          </div>
+          <div class="resource-card">
+            <h3>Tài liệu 3: Thay đổi vận mệnh để giàu có và khỏe mạnh</h3>
+            <a href="https://drive.usercontent.google.com/uc?id=1EejHmpnRG2CcoY0xGc63Vk91MEUexraJ&export=download" class="btn-download" target="_blank">📥 Tải về</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+	
+      <div style="text-align:center; margin-top:20px;">
+        <a href="https://m.me/khoahocdaycon" target="_blank" class="btn-fanpage">
+          💬 Liên hệ Fanpage nếu cần hỗ trợ
+        </a>
+      </div>
+      <div class="featured-quote">
+        <h2 style="color:#348C90; margin-bottom:15px;">Lời khuyên từ chuyên gia</h2>
+        <blockquote>
+          <p>“Mọi phụ huynh đều nên học và áp dụng khóa học này, đây là những kiến thức giúp con phát triển toàn diện, vì nhà trường không thể thay thế sự quan tâm và dẫn dắt của cha mẹ.”</p>
+          <footer>— Thầy Tuấn, Chuyên gia giáo dục</footer>
+        </blockquote>
+      </div>
+
+      <h3 style="color:#348C90; margin-top:30px; margin-bottom:10px; text-align: left;">
+        Phản hồi của phụ huynh:
+      </h3>
+      <div id="chatReviewContainer"></div>
+    </footer>
+  </div>
+
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script src="script.js?v=20251111"></script>
 </body>
 </html>
