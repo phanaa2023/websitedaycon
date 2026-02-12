@@ -190,7 +190,10 @@ async function checkCodeFromCSV(code) {
       return { allowed: false, source: "csv", message: "Không thấy cột mã (code/mã/ma) trong CSV" };
     }
 
-    const codeNorm = String(code || "").trim().toLowerCase();
+    let codeNorm = String(code || "").replace(/[^0-9]/g, '');
+if (codeNorm.length >= 9) {
+  codeNorm = codeNorm.slice(-9);
+}
 
     // Duyệt từng dòng dữ liệu
     for (let i = 1; i < lines.length; i++) {
@@ -198,10 +201,14 @@ async function checkCodeFromCSV(code) {
       // Bổ sung ô thiếu nếu dòng ngắn
       while (colsRaw.length < headers.length) colsRaw.push("");
       // Chuẩn hoá ô cần so khớp
-      const cell = (colsRaw[codeIndex] ?? "")
-        .trim()
-        .replace(/^"(.*)"$/, "$1") // bỏ "" bao quanh
-        .toLowerCase();
+      let cell = (colsRaw[codeIndex] ?? "")
+  .trim()
+  .replace(/^"(.*)"$/, "$1");
+
+cell = cell.replace(/[^0-9]/g, '');
+if (cell.length >= 9) {
+  cell = cell.slice(-9);
+}
 
       if (cell && cell === codeNorm) {
         return { allowed: true, source: "csv", message: "Mã hợp lệ (CSV backup)" };
@@ -226,7 +233,14 @@ async function handleUnlock() {
   const course = document.getElementById("course");
   const btn = document.getElementById("unlockBtn");
 
-  const code = (input?.value || "").trim().toLowerCase();
+  let rawCode = (input?.value || "").trim();
+
+// CHUẨN HÓA GIỐNG SERVER
+let code = rawCode.replace(/[^0-9]/g, '');
+
+if (code.length >= 9) {
+  code = code.slice(-9);
+}
   if (!code) {
     alert("Vui lòng nhập mã!");
     input?.focus();
@@ -358,7 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========== VIMEO PLAY EFFECT ==========
      (được tách từ <script> trong index.html — hiệu ứng hoa/tuyết rơi khi video phát) */
-  if (window.Vimeo && document.querySelectorAll("iframe[src*='vimeo.com']").length) {
+  if (window.Vimeo && typeof Vimeo.Player === "function") {
     function createParticle(type, container) {
       const particle = document.createElement("div");
       particle.classList.add("particle");
@@ -401,15 +415,24 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => clearInterval(interval), 10000);
     }
 
-    document.querySelectorAll("iframe[src*='vimeo.com']").forEach((iframe) => {
-	  if (index === 0) return;  // ❌ Bỏ qua video đầu tiên – không gắn hiệu ứng
-      const player = new Vimeo.Player(iframe);
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("effect-layer");
-      iframe.parentNode.style.position = "relative";
-      iframe.parentNode.appendChild(wrapper);
-      player.on("play", () => startEffect(wrapper));
-    });
+document.querySelectorAll("iframe[src*='vimeo.com']").forEach((iframe, index) => {
+  const player = new Vimeo.Player(iframe);
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("effect-layer");
+  iframe.parentNode.style.position = "relative";
+  iframe.parentNode.appendChild(wrapper);
+
+  // ✅ FLAG đặt ở đây (mỗi video có 1 flag riêng)
+  let effectRunning = false;
+
+  player.on("play", () => {
+    if (!effectRunning) {
+      effectRunning = true;
+      startEffect(wrapper);
+      setTimeout(() => effectRunning = false, 10000);
+    }
+  });
+});
   }
 });
 
